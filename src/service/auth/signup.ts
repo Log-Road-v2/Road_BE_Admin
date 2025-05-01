@@ -11,8 +11,8 @@ export const signUp = async (req: Request, res: Response) => {
     });
   }
   if (role !== Role.ADMIN) {
-    return res.status(400).json({
-      message: '올바르지 않은 역할'
+    return res.status(403).json({
+      message: '로그인 권한 없음'
     });
   }
   try {
