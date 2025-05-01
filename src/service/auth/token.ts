@@ -31,7 +31,7 @@ export const refresh = async (req: Request, res: Response) => {
   }
 
   const accessToken = await generateToken(value, true);
-  await redis.set(value, accessToken, 'EX', 7200);
+  await redis.set(value, accessToken, 'EX', 3600);
 
   return res.status(200).json({
     accessToken: accessToken,
