@@ -22,7 +22,7 @@ export const signUp = async (req: Request, res: Response) => {
         message: '이미 어드민 계정이 가입됨'
       });
     }
-    const hash = bcrypt.hashSync(password, 10);
+    const hash = await bcrypt.hash(password, 10);
     await prisma.user.create({
       data: {
         email: email,
