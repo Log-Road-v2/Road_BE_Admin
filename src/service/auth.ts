@@ -1,9 +1,11 @@
 import { signUp } from './auth/signup';
 import { refresh } from './auth/token';
 import { login } from './auth/login';
+import { logout } from './auth/logout';
 
 export default {
   signUp,
   login,
-  refresh
+  refresh,
+  logout
 };
