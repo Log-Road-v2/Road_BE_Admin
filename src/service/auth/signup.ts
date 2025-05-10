@@ -1,8 +1,9 @@
 import { prisma, Role } from '../../config/prisma';
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
+import { SignUpRequest } from '../../types/auth';
 
-export const signUp = async (req: Request, res: Response) => {
+export const signUp = async (req: Request<{}, {}, SignUpRequest>, res: Response) => {
   const { role, email, password, name } = req.body;
 
   if (!role || !email || !password || !name) {

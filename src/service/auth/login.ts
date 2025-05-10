@@ -3,8 +3,11 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import redis from '../../config/redis';
 import { generateToken } from './token';
+import crypto from 'crypto';
+import { LoginRequest, TokenResponse } from '../../types/auth';
+import { BasicResponse } from '../../types';
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request<{}, {}, LoginRequest>, res: Response<TokenResponse | BasicResponse>) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -32,13 +35,12 @@ export const login = async (req: Request, res: Response) => {
     }
 
     const accessToken = await generateToken(thisUser.id.toString(), true);
-    const refreshToken = await generateToken(Date.now().toString(), false);
+    const refreshToken = await generateToken(crypto.randomUUID(), false);
 
     await redis.set(thisUser.id.toString(), accessToken, 'EX', 7200);
-    await redis.set(refreshToken, thisUser.id.toString(), 'EX', 604800);
+    await redis.set(`refresh ${refreshToken}`, thisUser.id.toString(), 'EX', 604800);
 
     return res.status(200).json({
-      role: thisUser.role,
       accessToken: accessToken,
       refreshToken: refreshToken
     });
