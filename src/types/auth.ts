@@ -1,5 +1,6 @@
 import { Request } from 'express';
 import { Role } from '../config/prisma';
+import { ParsedQs } from 'qs';
 
 export interface SignUpRequest {
   role: Role;
@@ -18,7 +19,7 @@ export interface TokenResponse {
   refreshToken: string;
 }
 
-export interface AuthenticatedRequest extends Request {
+export interface AuthenticatedRequest<Params = {}, Query = ParsedQs, Body = {}> extends Request<Params, any, Body, Query> {
   payload?: PayloadData;
 }
 
