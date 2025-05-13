@@ -3,10 +3,10 @@ import student from '../service/student';
 import { postApiLimit } from '../middleware/limit';
 import { verifyJWT } from '../middleware/jwt';
 
-const app = express();
+const router = express.Router();
 
-app.get('/', postApiLimit, verifyJWT, (req: Request, res: Response) => {
+router.get('/', postApiLimit, verifyJWT, (req: Request, res: Response) => {
   student.searchStudents(req, res);
 });
 
-export default app;
+export default router;
