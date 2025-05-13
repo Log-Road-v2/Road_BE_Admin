@@ -1,3 +1,4 @@
+import { Request } from 'express';
 import { Role } from '../config/prisma';
 
 export interface SignUpRequest {
@@ -15,4 +16,14 @@ export interface LoginRequest {
 export interface TokenResponse {
   accessToken: string;
   refreshToken: string;
+}
+
+export interface AuthenticatedRequest extends Request {
+  payload?: PayloadData;
+}
+
+export interface PayloadData {
+  id: string;
+  type: 'access' | 'refresh';
+  iat: number;
 }
