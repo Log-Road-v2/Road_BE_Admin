@@ -20,7 +20,7 @@ export const checkRight = async (req: AuthenticatedRequest<{}, {}, {}>, res: Res
   const user = await prisma.user.findUnique({ where: { id: userId } });
   if (!user) {
     return res.status(404).json({
-      message: '존재하지 않는 사용지'
+      message: '존재하지 않는 사용자'
     });
   }
   if (user.role !== Role.ADMIN) {
