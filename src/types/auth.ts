@@ -19,7 +19,8 @@ export interface TokenResponse {
   refreshToken: string;
 }
 
-export interface AuthenticatedRequest<Params = {}, Query = ParsedQs, Body = {}> extends Request<Params, any, Body, Query> {
+export interface AuthenticatedRequest<Params = Record<string, never>, Query = ParsedQs, Body = Record<string, never>>
+  extends Request<Params, any, Body, Query> {
   payload?: PayloadData;
 }
 
