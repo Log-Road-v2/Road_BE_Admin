@@ -1,20 +1,8 @@
 import redis from '../../config/redis';
 import { BasicResponse } from '../../types';
 import { AuthenticatedRequest, TokenResponse } from '../../types/auth';
-import { signJWT } from '../../utils/jwt';
 import { Response } from 'express';
-
-export const generateToken = async (id: string, isAccess: boolean) => {
-  const token = signJWT(
-    {
-      id,
-      type: isAccess ? 'access' : 'refresh',
-      iat: Math.floor(Date.now() / 1000)
-    },
-    isAccess ? '1h' : '7d'
-  );
-  return token;
-};
+import { generateToken } from '../../utils/jwt';
 
 export const refresh = async (req: AuthenticatedRequest, res: Response<TokenResponse | BasicResponse>) => {
   try {

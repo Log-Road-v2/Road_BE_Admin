@@ -2,10 +2,10 @@ import { prisma, Role } from '../../config/prisma';
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import redis from '../../config/redis';
-import { generateToken } from './token';
 import crypto from 'crypto';
 import { LoginRequest, TokenResponse } from '../../types/auth';
 import { BasicResponse } from '../../types';
+import { generateToken } from '../../utils/jwt';
 
 export const login = async (req: Request<{}, {}, LoginRequest>, res: Response<TokenResponse | BasicResponse>) => {
   const { email, password } = req.body;
@@ -34,7 +34,18 @@ export const login = async (req: Request<{}, {}, LoginRequest>, res: Response<To
       });
     }
 
-    const accessToken = await generateToken(thisUser.id.toString(), true);
+    const userId = thisUser.id.toString();
+    const keys = await redis.keys('refresh *');
+    for (const key of keys) {
+      const storedUserId = await redis.get(key);
+      if (storedUserId === userId) {
+        await redis.del(key);
+        break;
+      }
+    }
+    await redis.del(userId);
+
+    const accessToken = await generateToken(userId, true);
     const refreshToken = await generateToken(crypto.randomUUID(), false);
 
     await redis.set(thisUser.id.toString(), accessToken, 'EX', 7200);
