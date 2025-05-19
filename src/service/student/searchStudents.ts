@@ -2,18 +2,12 @@ import { Response } from 'express';
 import { prisma } from '../../config/prisma';
 import { AuthenticatedRequest } from '../../types/auth';
 import { BasicResponse } from '../../types';
-import { checkRight } from '../../utils/checkRight';
 import { SearchStudentQuery, SearchStudentResponse } from '../../types/student';
 
 export const searchStudents = async (req: AuthenticatedRequest<{}, SearchStudentQuery, {}>, res: Response<SearchStudentResponse | BasicResponse>) => {
   const pageSize = 10;
 
   try {
-    const isAdmin = await checkRight(req, res);
-    if (isAdmin !== true) {
-      return isAdmin;
-    }
-
     const { grade, classNumber, keyword, offset } = req.query;
     const where = keyword
       ? /^\d{1,4}$/.test(keyword.toString())
@@ -40,7 +34,7 @@ export const searchStudents = async (req: AuthenticatedRequest<{}, SearchStudent
           state: true
         },
         where: where,
-        skip: pageSize * (Number(offset) - 1 || 0),
+        skip: pageSize * Math.max(Number(offset || 0) - 1, 0),
         take: pageSize,
         orderBy: [{ grade: 'asc' }, { classNumber: 'asc' }, { studentNumber: 'asc' }, { name: 'asc' }]
       }),
