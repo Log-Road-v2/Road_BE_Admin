@@ -1,6 +1,6 @@
 import rateLimit from 'express-rate-limit';
 
-export const postApiLimit = rateLimit({
+export const apiLimit = rateLimit({
   windowMs: 1000 * 60,
   max: 5,
   handler(req, res) {

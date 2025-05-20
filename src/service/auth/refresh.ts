@@ -1,6 +1,6 @@
 import redis from '../../config/redis';
-import { BasicResponse, REDIS_KEY } from '../../types';
-import { AuthenticatedRequest, TokenResponse } from '../../types/auth';
+import { BasicResponse, REDIS_KEY, AuthenticatedRequest } from '../../types';
+import { TokenResponse } from '../../types/auth';
 import { Response } from 'express';
 import { generateToken } from '../../utils/jwt';
 import crypto from 'crypto';

@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { AuthenticatedRequest, PayloadData } from '../types/auth';
+import { AuthenticatedRequest, PayloadData } from '../types';
 
 export const verifyJWT = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
   try {

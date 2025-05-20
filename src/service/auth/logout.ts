@@ -1,7 +1,6 @@
 import { Response } from 'express';
 import redis from '../../config/redis';
-import { AuthenticatedRequest } from '../../types/auth';
-import { BasicResponse, REDIS_KEY } from '../../types';
+import { BasicResponse, REDIS_KEY, AuthenticatedRequest } from '../../types';
 
 export const logout = async (req: AuthenticatedRequest, res: Response<BasicResponse>) => {
   try {
