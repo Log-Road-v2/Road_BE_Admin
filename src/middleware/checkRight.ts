@@ -24,6 +24,7 @@ export const checkRight = async (req: AuthenticatedRequest, res: Response<BasicR
       });
       return;
     }
+
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
       res.status(404).json({
