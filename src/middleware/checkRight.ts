@@ -28,7 +28,7 @@ export const checkRight = async (req: AuthenticatedRequest, res: Response<BasicR
     }
     if (user.role !== Role.ADMIN) {
       res.status(403).json({
-        message: '권한 없음음'
+        message: '권한 없음'
       });
       return;
     }
