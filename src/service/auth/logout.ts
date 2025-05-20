@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import redis from '../../config/redis';
 import { AuthenticatedRequest } from '../../types/auth';
-import { BasicResponse } from '../../types';
+import { BasicResponse, REDIS_KEY } from '../../types';
 
 export const logout = async (req: AuthenticatedRequest, res: Response<BasicResponse>) => {
   try {
@@ -12,15 +12,9 @@ export const logout = async (req: AuthenticatedRequest, res: Response<BasicRespo
       });
     }
     const userId = payload.id;
-    const keys = await redis.keys('refresh *');
-    for (const key of keys) {
-      const storedUserId = await redis.get(key);
-      if (storedUserId === userId) {
-        await redis.del(key);
-        break;
-      }
-    }
-    await redis.del(userId);
+
+    await redis.del(`${REDIS_KEY.ACCESS_TOKEN} ${userId}`);
+    await redis.del(`${REDIS_KEY.REFRESH_TOKEN} ${userId}`);
 
     return res.status(200).json({
       message: '로그아웃 완료'

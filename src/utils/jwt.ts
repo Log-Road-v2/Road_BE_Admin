@@ -13,10 +13,11 @@ export const signJWT = (payload: object, expiresIn: ms.StringValue | number): st
   return jwt.sign(payload, privateKey, signOptions);
 };
 
-export const generateToken = async (id: string, isAccess: boolean) => {
+export const generateToken = async (id: string, sub: string, isAccess: boolean) => {
   const token = signJWT(
     {
       id,
+      sub,
       type: isAccess ? 'access' : 'refresh',
       iat: Math.floor(Date.now() / 1000)
     },

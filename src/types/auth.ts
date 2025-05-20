@@ -26,6 +26,7 @@ export interface AuthenticatedRequest<Params = Record<string, never>, Query = Pa
 
 export interface PayloadData {
   id: string;
+  sub: string;
   type: 'access' | 'refresh';
   iat: number;
 }

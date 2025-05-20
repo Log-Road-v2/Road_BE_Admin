@@ -1,10 +1,13 @@
 import redis from '../../config/redis';
-import { BasicResponse } from '../../types';
+import { BasicResponse, REDIS_KEY } from '../../types';
 import { AuthenticatedRequest, TokenResponse } from '../../types/auth';
 import { Response } from 'express';
 import { generateToken } from '../../utils/jwt';
+import crypto from 'crypto';
 
 export const refresh = async (req: AuthenticatedRequest, res: Response<TokenResponse | BasicResponse>) => {
+  const accessSecond = Number(process.env.ACCESS_TOKEN_EXPIRY_SECOND) || 3600;
+
   try {
     const payload = req.payload;
     if (!payload) {
@@ -24,15 +27,11 @@ export const refresh = async (req: AuthenticatedRequest, res: Response<TokenResp
       });
     }
     const token = authorization.split(' ')[1];
-    const value = await redis.get(`refresh ${token}`);
-    if (!value) {
-      return res.status(400).json({
-        message: '만료되었거나 확인할 수 없는 토큰'
-      });
-    }
 
-    const accessToken = await generateToken(value, true);
-    await redis.set(value, accessToken, 'EX', 3600);
+    const userId = payload.sub;
+
+    const accessToken = await generateToken(userId, crypto.randomUUID(), true);
+    await redis.set(`${REDIS_KEY.ACCESS_TOKEN} ${userId}`, accessToken, 'EX', accessSecond);
 
     return res.status(200).json({
       accessToken: accessToken,
