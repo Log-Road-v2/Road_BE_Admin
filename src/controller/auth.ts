@@ -1,16 +1,22 @@
 import express, { Request, Response } from 'express';
 import auth from '../service/auth';
+import { apiLimit } from '../middleware/limit';
+import { verifyJWT } from '../middleware/jwt';
+import { AuthenticatedRequest } from '../types';
 
-const app = express();
+const router = express.Router();
 
-app.post('/signup', (req: Request, res: Response) => {
+router.post('/signup', apiLimit, (req: Request, res: Response) => {
   auth.signUp(req, res);
 });
-app.post('/login', (req: Request, res: Response) => {
+router.post('/login', apiLimit, (req: Request, res: Response) => {
   auth.login(req, res);
 });
-app.post('/refresh', (req: Request, res: Response) => {
+router.post('/refresh', apiLimit, verifyJWT, (req: AuthenticatedRequest, res: Response) => {
   auth.refresh(req, res);
 });
+router.post('/logout', apiLimit, verifyJWT, (req: AuthenticatedRequest, res: Response) => {
+  auth.logout(req, res);
+});
 
-export default app;
+export default router;

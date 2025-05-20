@@ -2,9 +2,15 @@ import { prisma, Role } from '../../config/prisma';
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import redis from '../../config/redis';
-import { generateToken } from './token';
+import crypto from 'crypto';
+import { LoginRequest, TokenResponse } from '../../types/auth';
+import { BasicResponse, REDIS_KEY } from '../../types';
+import { generateToken } from '../../utils/jwt';
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request<{}, {}, LoginRequest>, res: Response<TokenResponse | BasicResponse>) => {
+  const accessSecond = Number(process.env.ACCESS_TOKEN_EXPIRY_SECOND) || 3600;
+  const refreshSecond = Number(process.env.REFRESH_TOKEN_EXPIRY_SECOND) || 604800;
+
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -31,14 +37,13 @@ export const login = async (req: Request, res: Response) => {
       });
     }
 
-    const accessToken = await generateToken(thisUser.id.toString(), true);
-    const refreshToken = await generateToken(Date.now().toString(), false);
+    const accessToken = generateToken(thisUser.id.toString(), crypto.randomUUID(), true);
+    const refreshToken = generateToken(crypto.randomUUID(), thisUser.id.toString(), false);
 
-    await redis.set(thisUser.id.toString(), accessToken, 'EX', 7200);
-    await redis.set(refreshToken, thisUser.id.toString(), 'EX', 604800);
+    await redis.set(`${REDIS_KEY.ACCESS_TOKEN} ${thisUser.id}`, accessToken, 'EX', accessSecond);
+    await redis.set(`${REDIS_KEY.REFRESH_TOKEN} ${thisUser.id}`, refreshToken, 'EX', refreshSecond);
 
     return res.status(200).json({
-      role: thisUser.role,
       accessToken: accessToken,
       refreshToken: refreshToken
     });
