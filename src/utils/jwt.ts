@@ -1,7 +1,7 @@
 import jwt, { SignOptions } from 'jsonwebtoken';
 import ms from 'ms';
 
-export const signJWT = (payload: object, expiresIn: ms.StringValue | number): string => {
+const signJWT = (payload: object, expiresIn: ms.StringValue | number): string => {
   const privateKey = process.env.PRIVATE_KEY;
   if (!privateKey) {
     throw new Error('private key is not defined');
@@ -13,7 +13,7 @@ export const signJWT = (payload: object, expiresIn: ms.StringValue | number): st
   return jwt.sign(payload, privateKey, signOptions);
 };
 
-export const generateToken = async (id: string, sub: string, isAccess: boolean) => {
+export const generateToken = (id: string, sub: string, isAccess: boolean) => {
   const token = signJWT(
     {
       id,
