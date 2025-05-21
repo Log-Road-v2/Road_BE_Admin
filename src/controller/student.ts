@@ -10,7 +10,7 @@ const router = express.Router();
 router.get('/', getApiLimit, verifyJWT, checkRight, (req: AuthenticatedRequest, res: Response) => {
   student.searchStudents(req, res);
 });
-router.patch('/:studentId', apiLimit, verifyJWT, checkRight, (req: Request, res: Response) => {
+router.patch('/:studentId', apiLimit, verifyJWT, checkRight, (req: AuthenticatedRequest, res: Response) => {
   student.modifyStudent(req, res);
 });
 
