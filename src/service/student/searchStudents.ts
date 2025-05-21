@@ -3,7 +3,10 @@ import { prisma } from '../../config/prisma';
 import { BasicResponse, AuthenticatedRequest } from '../../types';
 import { SearchStudentQuery, SearchStudentResponse } from '../../types/student';
 
-export const searchStudents = async (req: AuthenticatedRequest<{}, SearchStudentQuery, {}>, res: Response<SearchStudentResponse | BasicResponse>) => {
+export const searchStudents = async (
+  req: AuthenticatedRequest<{}, BasicResponse, {}, SearchStudentQuery>,
+  res: Response<SearchStudentResponse | BasicResponse>
+) => {
   const pageSize = 10;
 
   try {

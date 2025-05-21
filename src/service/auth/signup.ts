@@ -13,7 +13,7 @@ export const signUp = async (req: Request<{}, {}, SignUpRequest>, res: Response)
   }
   if (role !== Role.ADMIN) {
     return res.status(403).json({
-      message: '로그인 권한 없음'
+      message: '회원가입 권한 없음'
     });
   }
   try {
