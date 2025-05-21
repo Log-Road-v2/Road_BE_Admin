@@ -1,15 +1,25 @@
-import { BasicResponse } from '../../types';
-import { Request, Response } from 'express';
+import { AuthenticatedRequest, BasicResponse } from '../../types';
+import { Response } from 'express';
 import { prisma } from '../../config/prisma';
 
-export const modifyStudent = async (req: Request, res: Response<BasicResponse>) => {
+export const modifyStudent = async (req: AuthenticatedRequest, res: Response<BasicResponse>) => {
   try {
     const studentId = Number(req.params.studentId);
-    const { state, name, generation, grade, classNumber, studentNumber } = req.body;
+    if (isNaN(studentId)) {
+      return res.status(400).json({
+        message: '유효하지 않은 학생 ID'
+      });
+    }
 
+    const { state, name, generation, grade, classNumber, studentNumber } = req.body;
     if (!state || !name || !generation || !grade || !classNumber || !studentNumber) {
       return res.status(400).json({
         message: '올바르지 않은 입력값'
+      });
+    }
+    if (isNaN(Number(generation)) || isNaN(Number(grade)) || isNaN(Number(classNumber)) || isNaN(Number(studentNumber))) {
+      return res.status(400).json({
+        message: '올바르지 않은 입력값 (generation, grade, classNumber, studentNumber)'
       });
     }
 
