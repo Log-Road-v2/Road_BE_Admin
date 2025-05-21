@@ -17,9 +17,29 @@ export const modifyStudent = async (req: AuthenticatedRequest, res: Response<Bas
         message: '올바르지 않은 입력값'
       });
     }
-    if (isNaN(Number(generation)) || isNaN(Number(grade)) || isNaN(Number(classNumber)) || isNaN(Number(studentNumber))) {
+
+    const numGeneration = Number(generation);
+    const numGrade = Number(grade);
+    const numClassNumber = Number(classNumber);
+    const numStudentNumber = Number(studentNumber);
+    if (isNaN(numGeneration) || numGeneration < 1) {
       return res.status(400).json({
-        message: '올바르지 않은 입력값 (generation, grade, classNumber, studentNumber)'
+        message: '기수는 양수여야 합니다'
+      });
+    }
+    if (isNaN(numGrade) || numGrade < 1 || numGrade > 3) {
+      return res.status(400).json({
+        message: '학년은 1 ~ 3 사이여야 합니다'
+      });
+    }
+    if (isNaN(numClassNumber) || numClassNumber < 1 || numClassNumber > 4) {
+      return res.status(400).json({
+        message: '반은 1 ~ 4 사이여야 합니다'
+      });
+    }
+    if (isNaN(numStudentNumber) || numStudentNumber < 1) {
+      return res.status(400).json({
+        message: '번호는 양수여야 합니다'
       });
     }
 
