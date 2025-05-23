@@ -11,17 +11,33 @@ export const searchStudents = async (
 
   try {
     const { grade, classNumber, keyword, offset } = req.query;
+
     const where = keyword
       ? /^\d{1,4}$/.test(keyword.toString())
         ? {
-            grade: keyword[0],
-            ...(keyword[1] && { classNumber: keyword[1] }),
-            ...(keyword.slice(2) && { studentNumber: { startsWith: keyword.slice(2) } })
+            grade: (() => {
+              const gradeNum = Number(keyword[0]);
+              return gradeNum >= 1 && gradeNum <= 3 ? gradeNum : undefined;
+            })(),
+            ...(keyword[1] &&
+              (() => {
+                const classNum = Number(keyword[1]);
+                return classNum >= 1 && classNum <= 4 ? { classNumber: classNum } : {};
+              })()),
+            ...(keyword.slice(2) && {
+              studentNumber: (() => {
+                const studentNum = Number(keyword.slice(2));
+                if (isNaN(studentNum)) {
+                  return undefined;
+                }
+                return keyword.slice(2).length === 1 ? { gte: studentNum * 10, lte: studentNum * 10 + 9 } : studentNum;
+              })()
+            })
           }
         : { name: { contains: keyword } }
       : {
-          ...(grade && { grade: grade }),
-          ...(classNumber && { classNumber: classNumber })
+          ...(grade && { grade: Number(grade) }),
+          ...(classNumber && { classNumber: Number(classNumber) })
         };
 
     const [students, totalStudents] = await prisma.$transaction([
