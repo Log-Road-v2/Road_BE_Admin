@@ -22,3 +22,16 @@ export interface StudentInfo {
   name: string;
   state: StudentState;
 }
+
+export interface FileFirstGradeStudentData {
+  studentNum: number;
+  name: string;
+}
+
+export interface FileStudentData {
+  studentNum: number;
+  name: string;
+  gender: string;
+  beforeStudentNum: number;
+  etc: string;
+}
