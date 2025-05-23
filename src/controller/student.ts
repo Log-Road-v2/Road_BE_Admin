@@ -13,5 +13,8 @@ router.get('/', getApiLimit, verifyJWT, checkRight, (req: AuthenticatedRequest, 
 router.patch('/:studentId', apiLimit, verifyJWT, checkRight, (req: AuthenticatedRequest, res: Response) => {
   student.modifyStudent(req, res);
 });
+router.delete('/:studentId', apiLimit, verifyJWT, checkRight, (req: AuthenticatedRequest, res: Response) => {
+  student.removeStudent(req, res);
+});
 
 export default router;
