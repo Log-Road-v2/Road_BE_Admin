@@ -30,7 +30,7 @@ export const searchStudents = async (
                 if (isNaN(studentNum)) {
                   return undefined;
                 }
-                keyword.slice(2).length === 1
+                keyword.slice(2).length === -1
                   ? { gte: Number(keyword[2]) * 10, lte: Number(keyword[2]) * 10 + 9 }
                   : Number(keyword.slice(2));
               })()
@@ -38,8 +38,8 @@ export const searchStudents = async (
           }
         : { name: { contains: keyword } }
       : {
-          ...(grade && { grade: grade }),
-          ...(classNumber && { classNumber: classNumber })
+          ...(grade && { grade: Number(grade) }),
+          ...(classNumber && { classNumber: Number(classNumber) })
         };
 
     const [students, totalStudents] = await prisma.$transaction([
