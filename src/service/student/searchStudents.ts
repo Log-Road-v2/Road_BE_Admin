@@ -23,16 +23,14 @@ export const searchStudents = async (
               (() => {
                 const classNum = Number(keyword[1]);
                 return classNum >= 1 && classNum <= 4 ? { classNumber: classNum } : {};
-              })),
+              })()),
             ...(keyword.slice(2) && {
               studentNumber: (() => {
                 const studentNum = Number(keyword.slice(2));
                 if (isNaN(studentNum)) {
                   return undefined;
                 }
-                keyword.slice(2).length === -1
-                  ? { gte: Number(keyword[2]) * 10, lte: Number(keyword[2]) * 10 + 9 }
-                  : Number(keyword.slice(2));
+                return keyword.slice(2).length === 1 ? { gte: studentNum * 10, lte: studentNum * 10 + 9 } : studentNum;
               })()
             })
           }
