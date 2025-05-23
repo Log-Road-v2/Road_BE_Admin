@@ -11,12 +11,18 @@ export const searchStudents = async (
 
   try {
     const { grade, classNumber, keyword, offset } = req.query;
+
     const where = keyword
       ? /^\d{1,4}$/.test(keyword.toString())
         ? {
-            grade: keyword[0],
-            ...(keyword[1] && { classNumber: keyword[1] }),
-            ...(keyword.slice(2) && { studentNumber: { startsWith: keyword.slice(2) } })
+            grade: Number(keyword[0]),
+            ...(keyword[1] && { classNumber: Number(keyword[1]) }),
+            ...(keyword.slice(2) && {
+              studentNumber:
+                keyword.slice(2).length == 1
+                  ? { gte: Number(keyword[2]) * 10, lte: Number(keyword[2]) * 10 + 9 }
+                  : Number(keyword.slice(2))
+            })
           }
         : { name: { contains: keyword } }
       : {

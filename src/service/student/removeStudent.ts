@@ -4,12 +4,7 @@ import { prisma } from '../../config/prisma';
 
 export const removeStudent = async (req: AuthenticatedRequest, res: Response<BasicResponse>) => {
   try {
-    const studentId = Number(req.params.studentId);
-    if (isNaN(studentId)) {
-      return res.status(400).json({
-        message: '유효하지 않은 학생 ID'
-      });
-    }
+    const studentId = BigInt(req.params.studentId);
 
     const student = await prisma.student.findUnique({ where: { id: studentId } });
     if (!student) {

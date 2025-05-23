@@ -1,8 +1,8 @@
 import { StudentState } from '../config/prisma';
 
 export interface SearchStudentQuery {
-  grade?: string;
-  classNumber?: string;
+  grade?: number;
+  classNumber?: number;
   keyword?: string;
   offset?: number;
 }
@@ -15,10 +15,10 @@ export interface SearchStudentResponse {
 
 export interface StudentInfo {
   id: bigint;
-  generation: string;
-  grade?: string | null;
-  classNumber?: string | null;
-  studentNumber?: string | null;
+  generation: number;
+  grade?: number | null;
+  classNumber?: number | null;
+  studentNumber?: number | null;
   name: string;
   state: StudentState;
 }
