@@ -12,8 +12,12 @@ export interface PayloadData {
   iat: number;
 }
 
-export interface AuthenticatedRequest<Params = Record<string, never>, ResBody = unknown, Body = Record<string, never>, Query = ParsedQs>
-  extends Request<Params, ResBody, Body, Query> {
+export interface AuthenticatedRequest<
+  Params = Record<string, never>,
+  ResBody = unknown,
+  Body = Record<string, never>,
+  Query = ParsedQs
+> extends Request<Params, ResBody, Body, Query> {
   payload?: PayloadData;
   userId?: bigint;
 }
