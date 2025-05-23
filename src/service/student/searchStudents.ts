@@ -15,13 +15,25 @@ export const searchStudents = async (
     const where = keyword
       ? /^\d{1,4}$/.test(keyword.toString())
         ? {
-            grade: Number(keyword[0]),
-            ...(keyword[1] && { classNumber: Number(keyword[1]) }),
+            grade: (() => {
+              const gradeNum = Number(keyword[0]);
+              return gradeNum >= 1 && gradeNum <= 3 ? gradeNum : undefined;
+            })(),
+            ...(keyword[1] &&
+              (() => {
+                const classNum = Number(keyword[1]);
+                return classNum >= 1 && classNum <= 4 ? { classNumber: classNum } : {};
+              })),
             ...(keyword.slice(2) && {
-              studentNumber:
-                keyword.slice(2).length == 1
+              studentNumber: (() => {
+                const studentNum = Number(keyword.slice(2));
+                if (isNaN(studentNum)) {
+                  return undefined;
+                }
+                keyword.slice(2).length === 1
                   ? { gte: Number(keyword[2]) * 10, lte: Number(keyword[2]) * 10 + 9 }
-                  : Number(keyword.slice(2))
+                  : Number(keyword.slice(2));
+              })()
             })
           }
         : { name: { contains: keyword } }
