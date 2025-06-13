@@ -3,12 +3,12 @@ import { prisma } from '../../config/prisma';
 import { BasicResponse, AuthenticatedRequest } from '../../types';
 import { SearchStudentQuery, SearchStudentResponse } from '../../types/student';
 
+const PAGE_SIZE = 10;
+
 export const searchStudents = async (
   req: AuthenticatedRequest<{}, BasicResponse, {}, SearchStudentQuery>,
   res: Response<SearchStudentResponse | BasicResponse>
 ) => {
-  const pageSize = 10;
-
   try {
     const { grade, classNumber, keyword, offset } = req.query;
 
@@ -52,8 +52,8 @@ export const searchStudents = async (
           state: true
         },
         where: where,
-        skip: pageSize * Math.max(Number(offset || 0) - 1, 0),
-        take: pageSize,
+        skip: PAGE_SIZE * Math.max(Number(offset || 0) - 1, 0),
+        take: PAGE_SIZE,
         orderBy: [{ grade: 'asc' }, { classNumber: 'asc' }, { studentNumber: 'asc' }, { name: 'asc' }]
       }),
       prisma.student.count({
