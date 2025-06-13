@@ -6,7 +6,7 @@ import { SearchStudentQuery, SearchStudentResponse } from '../../types/student';
 const PAGE_SIZE = 10;
 
 export const searchStudents = async (
-  req: AuthenticatedRequest<{}, BasicResponse, {}, SearchStudentQuery>,
+  req: AuthenticatedRequest<{}, BasicResponse | SearchStudentResponse, {}, SearchStudentQuery>,
   res: Response<SearchStudentResponse | BasicResponse>
 ) => {
   try {
