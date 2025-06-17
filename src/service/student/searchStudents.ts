@@ -7,7 +7,12 @@ import { parseEnvToInt } from '../../utils/parseEnv';
 const PAGE_SIZE = parseEnvToInt(process.env.STUDENT_PAGE_SIZE, 10);
 
 export const searchStudents = async (
-  req: AuthenticatedRequest<{}, BasicResponse | SearchStudentResponse, {}, SearchStudentQuery>,
+  req: AuthenticatedRequest<
+    Record<string, never>,
+    BasicResponse | SearchStudentResponse,
+    Record<string, never>,
+    SearchStudentQuery
+  >,
   res: Response<SearchStudentResponse | BasicResponse>
 ) => {
   try {
