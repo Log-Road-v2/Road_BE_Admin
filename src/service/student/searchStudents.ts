@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { prisma } from '../../config/prisma';
 import { BasicResponse, AuthenticatedRequest } from '../../types';
-import { SearchStudentQuery, SearchStudentResponse } from '../../types/student';
+import { SearchStudentQuery, SearchStudentResponse, StudentInfo } from '../../types/student';
 
 const PAGE_SIZE = 10;
 
@@ -60,10 +60,15 @@ export const searchStudents = async (
         where: where
       })
     ]);
+
+    const result: StudentInfo[] = students.map((student) => ({
+      ...student,
+      id: student.id.toString()
+    }));
     return res.status(200).json({
       offset: offset || 1,
       totalStudent: totalStudents,
-      students: students
+      students: result
     });
   } catch (err) {
     console.error(err);

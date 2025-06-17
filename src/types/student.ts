@@ -14,7 +14,7 @@ export interface SearchStudentResponse {
 }
 
 export interface StudentInfo {
-  id: bigint;
+  id: string;
   generation: number;
   grade?: number | null;
   classNumber?: number | null;
