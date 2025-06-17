@@ -1,7 +1,7 @@
 import { Author } from '../config/prisma';
 
 export interface ProjectListData {
-  id: bigint;
+  id: string;
   projectName: string;
   authorCategory: Author;
   introduction: string;

@@ -54,6 +54,7 @@ export const projectList = async (req: AuthenticatedRequest, res: Response<Proje
 
     const result: ProjectListData[] = projects.map((project) => ({
       ...project,
+      id: project.id.toString(),
       introduction: project.introduction ?? '',
       image: project.image ?? ''
     }));
