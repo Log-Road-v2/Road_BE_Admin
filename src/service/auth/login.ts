@@ -12,7 +12,7 @@ const ACCESS_EXPIRY_SECOND = parseEnvToInt(process.env.ACCESS_TOKEN_EXPIRY_SECON
 const REFRESH_EXPIRY_SECOND = parseEnvToInt(process.env.REFRESH_TOKEN_EXPIRY_SECOND, 604800);
 
 export const login = async (
-  req: Request<Record<string, never>, TokenResponse | BasicResponse, LoginRequest>,
+  req: Request<{}, TokenResponse | BasicResponse, LoginRequest>,
   res: Response<TokenResponse | BasicResponse>
 ) => {
   const { email, password } = req.body;
