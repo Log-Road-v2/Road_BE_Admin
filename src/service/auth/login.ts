@@ -44,8 +44,8 @@ export const login = async (
     const accessToken = generateToken(thisUser.id.toString(), crypto.randomUUID(), true);
     const refreshToken = generateToken(crypto.randomUUID(), thisUser.id.toString(), false);
 
-    await redis.set(`${REDIS_KEY.ACCESS_TOKEN} ${thisUser.id}`, accessToken, 'EX', ACCESS_EXPIRY_SECOND);
-    await redis.set(`${REDIS_KEY.REFRESH_TOKEN} ${thisUser.id}`, refreshToken, 'EX', REFRESH_EXPIRY_SECOND);
+    await redis.set(`${REDIS_KEY.ACCESS_TOKEN}:${thisUser.id}`, accessToken, 'EX', ACCESS_EXPIRY_SECOND);
+    await redis.set(`${REDIS_KEY.REFRESH_TOKEN}:${thisUser.id}`, refreshToken, 'EX', REFRESH_EXPIRY_SECOND);
 
     return res.status(200).json({
       accessToken: accessToken,

@@ -36,7 +36,7 @@ export const refresh = async (req: AuthenticatedRequest, res: Response<TokenResp
       });
     }
 
-    const refreshToken = await redis.get(`${REDIS_KEY.REFRESH_TOKEN} ${userId}`);
+    const refreshToken = await redis.get(`${REDIS_KEY.REFRESH_TOKEN}:${userId}`);
     if (!refreshToken || refreshToken !== token) {
       return res.status(400).json({
         message: '만료되었거나 일치하지 않는 토큰'
@@ -44,7 +44,7 @@ export const refresh = async (req: AuthenticatedRequest, res: Response<TokenResp
     }
 
     const accessToken = generateToken(userId, crypto.randomUUID(), true);
-    await redis.set(`${REDIS_KEY.ACCESS_TOKEN} ${userId}`, accessToken, 'EX', ACCESS_EXPIRY_SECOND);
+    await redis.set(`${REDIS_KEY.ACCESS_TOKEN}:${userId}`, accessToken, 'EX', ACCESS_EXPIRY_SECOND);
 
     return res.status(200).json({
       accessToken: accessToken,
