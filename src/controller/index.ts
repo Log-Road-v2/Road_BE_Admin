@@ -6,7 +6,7 @@ import project from './project';
 const app = express();
 
 app.use('/auth', auth);
-app.use('/student', student);
 app.use('/project', project);
+app.use('/student', student);
 
 export default app;
