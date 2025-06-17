@@ -12,6 +12,7 @@ export const searchStudents = async (
 ) => {
   try {
     const { grade, classNumber, keyword, offset } = req.query;
+    const offsetNumber = Number(offset) || 1;
 
     const where = keyword
       ? /^\d{1,4}$/.test(keyword.toString())
@@ -53,7 +54,7 @@ export const searchStudents = async (
           state: true
         },
         where: where,
-        skip: PAGE_SIZE * Math.max(Number(offset || 0) - 1, 0),
+        skip: PAGE_SIZE * Math.max(offsetNumber - 1, 0),
         take: PAGE_SIZE,
         orderBy: [{ grade: 'asc' }, { classNumber: 'asc' }, { studentNumber: 'asc' }, { name: 'asc' }]
       }),
@@ -67,7 +68,7 @@ export const searchStudents = async (
       id: student.id.toString()
     }));
     return res.status(200).json({
-      offset: offset || 1,
+      offset: offsetNumber,
       totalStudent: totalStudents,
       students: result
     });
