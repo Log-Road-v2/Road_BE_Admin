@@ -2,8 +2,9 @@ import { AuthenticatedRequest, BasicResponse } from '../../types';
 import { Response } from 'express';
 import { ProjectListData, ProjectListResponse } from '../../types/project';
 import { prisma, ProjectState } from '../../config/prisma';
+import { parseEnvToInt } from '../../utils/parseEnv';
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = parseEnvToInt(process.env.PROJECT_PAGE_SIZE, 20);
 
 export const projectList = async (req: AuthenticatedRequest, res: Response<ProjectListResponse | BasicResponse>) => {
   try {
