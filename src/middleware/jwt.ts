@@ -2,15 +2,13 @@ import { NextFunction, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { AuthenticatedRequest, PayloadData } from '../types';
 
+const SECRET_KEY = process.env.SECRET_KEY;
+if (!SECRET_KEY) {
+  throw new Error('secret key get fail from env');
+}
+
 export const verifyJWT = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
   try {
-    const privateKey = process.env.PRIVATE_KEY;
-    if (!privateKey) {
-      res.status(500).json({
-        message: 'private key is not defined'
-      });
-      return;
-    }
     const authorization = req.get('Authorization');
     if (!authorization || !authorization.startsWith('Bearer ')) {
       res.status(401).json({
@@ -19,7 +17,7 @@ export const verifyJWT = (req: AuthenticatedRequest, res: Response, next: NextFu
       return;
     }
     const token = authorization.split(' ')[1];
-    const decoded = jwt.verify(token, privateKey) as PayloadData;
+    const decoded = jwt.verify(token, SECRET_KEY) as PayloadData;
     if (!decoded || !decoded.id || !decoded.sub || !decoded.iat || !decoded.type) {
       res.status(401).json({
         message: '유효하지 않은 토큰 페이로드'
