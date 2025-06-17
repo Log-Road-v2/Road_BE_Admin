@@ -8,7 +8,7 @@ const PAGE_SIZE = parseEnvToInt(process.env.PROJECT_PAGE_SIZE, 20);
 
 export const projectList = async (req: AuthenticatedRequest, res: Response<ProjectListResponse | BasicResponse>) => {
   try {
-    const contestId = req.params.contestId;
+    const contestId = BigInt(req.params.contestId);
 
     const state = (req.query.state as ProjectState | 'ALL') ?? 'ALL';
     const offset = Number(req.query.offset) || 1;
