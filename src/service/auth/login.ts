@@ -6,11 +6,15 @@ import crypto from 'crypto';
 import { LoginRequest, TokenResponse } from '../../types/auth';
 import { BasicResponse, REDIS_KEY } from '../../types';
 import { generateToken } from '../../utils/jwt';
+import { parseEnvToInt } from '../../utils/parseEnv';
 
-export const login = async (req: Request<{}, {}, LoginRequest>, res: Response<TokenResponse | BasicResponse>) => {
-  const accessSecond = Number(process.env.ACCESS_TOKEN_EXPIRY_SECOND) || 3600;
-  const refreshSecond = Number(process.env.REFRESH_TOKEN_EXPIRY_SECOND) || 604800;
+const ACCESS_EXPIRY_SECOND = parseEnvToInt(process.env.ACCESS_TOKEN_EXPIRY_SECOND, 3600);
+const REFRESH_EXPIRY_SECOND = parseEnvToInt(process.env.REFRESH_TOKEN_EXPIRY_SECOND, 604800);
 
+export const login = async (
+  req: Request<{}, TokenResponse | BasicResponse, LoginRequest>,
+  res: Response<TokenResponse | BasicResponse>
+) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -40,8 +44,8 @@ export const login = async (req: Request<{}, {}, LoginRequest>, res: Response<To
     const accessToken = generateToken(thisUser.id.toString(), crypto.randomUUID(), true);
     const refreshToken = generateToken(crypto.randomUUID(), thisUser.id.toString(), false);
 
-    await redis.set(`${REDIS_KEY.ACCESS_TOKEN} ${thisUser.id}`, accessToken, 'EX', accessSecond);
-    await redis.set(`${REDIS_KEY.REFRESH_TOKEN} ${thisUser.id}`, refreshToken, 'EX', refreshSecond);
+    await redis.set(`${REDIS_KEY.ACCESS_TOKEN}:${thisUser.id}`, accessToken, 'EX', ACCESS_EXPIRY_SECOND);
+    await redis.set(`${REDIS_KEY.REFRESH_TOKEN}:${thisUser.id}`, refreshToken, 'EX', REFRESH_EXPIRY_SECOND);
 
     return res.status(200).json({
       accessToken: accessToken,

@@ -1,9 +1,20 @@
 import { prisma, Role } from '../../config/prisma';
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import { SignUpRequest } from '../../types/auth';
+import { SignUpRequest, TokenResponse } from '../../types/auth';
+import { generateToken } from '../../utils/jwt';
+import crypto from 'crypto';
+import redis from '../../config/redis';
+import { BasicResponse, REDIS_KEY } from '../../types';
+import { parseEnvToInt } from '../../utils/parseEnv';
 
-export const signUp = async (req: Request<{}, {}, SignUpRequest>, res: Response) => {
+const ACCESS_EXPIRY_SECOND = parseEnvToInt(process.env.ACCESS_TOKEN_EXPIRY_SECOND, 3600);
+const REFRESH_EXPIRY_SECOND = parseEnvToInt(process.env.REFRESH_TOKEN_EXPIRY_SECOND, 604800);
+
+export const signUp = async (
+  req: Request<{}, TokenResponse | BasicResponse, SignUpRequest>,
+  res: Response<TokenResponse | BasicResponse>
+) => {
   const { role, email, password, name } = req.body;
 
   if (!role || !email || !password || !name) {
@@ -24,7 +35,7 @@ export const signUp = async (req: Request<{}, {}, SignUpRequest>, res: Response)
       });
     }
     const hash = await bcrypt.hash(password, 10);
-    await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         email: email,
         password: hash,
@@ -32,8 +43,16 @@ export const signUp = async (req: Request<{}, {}, SignUpRequest>, res: Response)
         role: role
       }
     });
+
+    const accessToken = generateToken(user.id.toString(), crypto.randomUUID(), true);
+    const refreshToken = generateToken(crypto.randomUUID(), user.id.toString(), false);
+
+    await redis.set(`${REDIS_KEY.ACCESS_TOKEN}:${user.id}`, accessToken, 'EX', ACCESS_EXPIRY_SECOND);
+    await redis.set(`${REDIS_KEY.REFRESH_TOKEN}:${user.id}`, refreshToken, 'EX', REFRESH_EXPIRY_SECOND);
+
     return res.status(201).json({
-      message: '회원가입 성공'
+      accessToken: accessToken,
+      refreshToken: refreshToken
     });
   } catch (err) {
     console.error(err);
