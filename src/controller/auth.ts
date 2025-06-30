@@ -6,15 +6,9 @@ import { loginHandler } from '../service/auth/login';
 
 const router = express.Router();
 
-router.post('/signup', apiLimit, (req: Request, res: Response) => {
-  auth.signUp(req, res);
-});
+router.post('/signup', apiLimit, auth.signUpHandler);
 router.post('/login', apiLimit, loginHandler);
-router.post('/refresh', apiLimit, verifyJWT, (req: Request, res: Response) => {
-  auth.refresh(req, res);
-});
-router.post('/logout', apiLimit, verifyJWT, (req: Request, res: Response) => {
-  auth.logout(req, res);
-});
+router.post('/refresh', apiLimit, verifyJWT, auth.refreshHandler);
+router.post('/logout', apiLimit, verifyJWT, auth.logoutHandler);
 
 export default router;
