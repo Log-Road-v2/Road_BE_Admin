@@ -1,11 +1,11 @@
-import { signUp } from './auth/signup';
-import { refresh } from './auth/refresh';
-import { login } from './auth/login';
-import { logout } from './auth/logout';
+import { loginHandler } from './auth/login';
+import { logoutHandler } from './auth/logout';
+import { refreshHandler } from './auth/refresh';
+import { signUpHandler } from './auth/signup';
 
 export default {
-  signUp,
-  login,
-  refresh,
-  logout
+  loginHandler,
+  logoutHandler,
+  refreshHandler,
+  signUpHandler
 };

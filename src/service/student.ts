@@ -1,11 +1,11 @@
-import { modifyStudent } from './student/modifyStudent';
-import { searchStudents } from './student/searchStudents';
-import { removeStudent } from './student/removeStudent';
-import { uploadStudent } from './student/uploadStudent';
+import { modifyStudentHandler } from './student/modifyStudent';
+import { removeStudentHandler } from './student/removeStudent';
+import { searchStudentsHandler } from './student/searchStudents';
+import { uploadStudentHandler } from './student/uploadStudent';
 
 export default {
-  modifyStudent,
-  removeStudent,
-  searchStudents,
-  uploadStudent
+  modifyStudentHandler,
+  removeStudentHandler,
+  searchStudentsHandler,
+  uploadStudentHandler
 };

@@ -35,3 +35,17 @@ export interface FileStudentData {
   beforeStudentNum: number;
   etc: string;
 }
+
+export interface StudentParams {
+  [key: string]: string;
+  studentId: string;
+}
+
+export interface ModifyStudentRequest {
+  state: StudentState;
+  name: string;
+  generation: number;
+  grade: number;
+  classNumber: number;
+  studentNumber: number;
+}
