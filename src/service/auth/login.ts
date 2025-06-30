@@ -1,5 +1,5 @@
 import { prisma, Role } from '../../config/prisma';
-import { Request, Response } from 'express';
+import { Request, RequestHandler, Response } from 'express';
 import bcrypt from 'bcrypt';
 import redis from '../../config/redis';
 import crypto from 'crypto';
@@ -11,8 +11,12 @@ import { parseEnvToInt } from '../../utils/parseEnv';
 const ACCESS_EXPIRY_SECOND = parseEnvToInt(process.env.ACCESS_TOKEN_EXPIRY_SECOND, 3600);
 const REFRESH_EXPIRY_SECOND = parseEnvToInt(process.env.REFRESH_TOKEN_EXPIRY_SECOND, 604800);
 
-export const login = async (
-  req: Request<{}, TokenResponse | BasicResponse, LoginRequest>,
+export const loginHandler: RequestHandler<unknown, TokenResponse | BasicResponse, LoginRequest> = async (req, res) => {
+  login(req, res);
+};
+
+const login = async (
+  req: Request<unknown, TokenResponse | BasicResponse, LoginRequest>,
   res: Response<TokenResponse | BasicResponse>
 ) => {
   const { email, password } = req.body;

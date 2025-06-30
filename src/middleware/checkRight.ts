@@ -1,8 +1,8 @@
-import { NextFunction, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { prisma, Role } from '../config/prisma';
-import { BasicResponse, AuthenticatedRequest } from '../types';
+import { BasicResponse } from '../types';
 
-export const checkRight = async (req: AuthenticatedRequest, res: Response<BasicResponse>, next: NextFunction) => {
+export const checkRight = async (req: Request, res: Response<BasicResponse>, next: NextFunction) => {
   try {
     const userId = req.userId;
     if (!userId) {

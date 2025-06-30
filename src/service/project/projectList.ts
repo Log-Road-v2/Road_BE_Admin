@@ -1,17 +1,29 @@
-import { AuthenticatedRequest, BasicResponse } from '../../types';
-import { Response } from 'express';
-import { ProjectListData, ProjectListResponse } from '../../types/project';
+import { BasicResponse } from '../../types';
+import { Request, RequestHandler, Response } from 'express';
+import { ProjectListData, ProjectListParams, ProjectListQuery, ProjectListResponse } from '../../types/project';
 import { prisma, ProjectState } from '../../config/prisma';
 import { parseEnvToInt } from '../../utils/parseEnv';
 
 const PAGE_SIZE = parseEnvToInt(process.env.PROJECT_PAGE_SIZE, 20);
 
-export const projectList = async (req: AuthenticatedRequest, res: Response<ProjectListResponse | BasicResponse>) => {
+export const projectListHandler: RequestHandler<
+  ProjectListParams,
+  ProjectListResponse | BasicResponse,
+  unknown,
+  ProjectListQuery
+> = async (req, res) => {
+  projectList(req, res);
+};
+
+export const projectList = async (
+  req: Request<ProjectListParams, ProjectListResponse | BasicResponse, unknown, ProjectListQuery>,
+  res: Response<ProjectListResponse | BasicResponse>
+) => {
   try {
     const contestId = BigInt(req.params.contestId);
 
-    const state = (req.query.state as ProjectState | 'ALL') ?? 'ALL';
-    const offset = Number(req.query.offset) || 1;
+    const offset = parseInt(req.query.offset ?? '1');
+    const state = req.query.state || 'ALL';
 
     if (!contestId || state === 'WRITING') {
       return res.status(400).json({
