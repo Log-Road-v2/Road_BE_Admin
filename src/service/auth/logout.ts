@@ -2,8 +2,8 @@ import { Request, RequestHandler, Response } from 'express';
 import redis from '../../config/redis';
 import { BasicResponse, REDIS_KEY } from '../../types';
 
-export const logoutHandler: RequestHandler = (req, res) => {
-  logout(req, res);
+export const logoutHandler: RequestHandler = async (req, res) => {
+  await logout(req, res);
 };
 
 const logout = async (req: Request, res: Response<BasicResponse>) => {

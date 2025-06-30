@@ -8,8 +8,8 @@ import { parseEnvToInt } from '../../utils/parseEnv';
 
 const ACCESS_EXPIRY_SECOND = parseEnvToInt(process.env.ACCESS_TOKEN_EXPIRY_SECOND, 3600);
 
-export const refreshHandler: RequestHandler = (req, res) => {
-  refresh(req, res);
+export const refreshHandler: RequestHandler = async (req, res) => {
+  await refresh(req, res);
 };
 
 const refresh = async (req: Request, res: Response<TokenResponse | BasicResponse>) => {

@@ -3,8 +3,8 @@ import { Request, RequestHandler, Response } from 'express';
 import { prisma } from '../../config/prisma';
 import { StudentParams } from '../../types/student';
 
-export const removeStudentHandler: RequestHandler<StudentParams, BasicResponse> = (req, res) => {
-  removeStudent(req, res);
+export const removeStudentHandler: RequestHandler<StudentParams, BasicResponse> = async (req, res) => {
+  await removeStudent(req, res);
 };
 
 const removeStudent = async (req: Request<StudentParams, BasicResponse>, res: Response<BasicResponse>) => {

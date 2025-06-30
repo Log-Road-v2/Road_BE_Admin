@@ -11,8 +11,11 @@ import { parseEnvToInt } from '../../utils/parseEnv';
 const ACCESS_EXPIRY_SECOND = parseEnvToInt(process.env.ACCESS_TOKEN_EXPIRY_SECOND, 3600);
 const REFRESH_EXPIRY_SECOND = parseEnvToInt(process.env.REFRESH_TOKEN_EXPIRY_SECOND, 604800);
 
-export const signUpHandler: RequestHandler<unknown, TokenResponse | BasicResponse, SignUpRequest> = (req, res) => {
-  signUp(req, res);
+export const signUpHandler: RequestHandler<unknown, TokenResponse | BasicResponse, SignUpRequest> = async (
+  req,
+  res
+) => {
+  await signUp(req, res);
 };
 
 const signUp = async (

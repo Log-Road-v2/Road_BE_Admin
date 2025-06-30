@@ -4,8 +4,8 @@ import { prisma } from '../../config/prisma';
 import { read, utils } from 'xlsx';
 import { FileFirstGradeStudentData, FileStudentData } from '../../types/student';
 
-export const uploadStudentHandler: RequestHandler = (req, res) => {
-  uploadStudent(req, res);
+export const uploadStudentHandler: RequestHandler = async (req, res) => {
+  await uploadStudent(req, res);
 };
 
 const uploadStudent = async (req: Request, res: Response<BasicResponse>) => {

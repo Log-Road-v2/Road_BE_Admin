@@ -11,8 +11,8 @@ export const searchStudentsHandler: RequestHandler<
   SearchStudentResponse | BasicResponse,
   unknown,
   SearchStudentQuery
-> = (req, res) => {
-  searchStudents(req, res);
+> = async (req, res) => {
+  await searchStudents(req, res);
 };
 
 const searchStudents = async (
