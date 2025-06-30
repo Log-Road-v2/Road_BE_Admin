@@ -1,14 +1,18 @@
 import redis from '../../config/redis';
 import { BasicResponse, REDIS_KEY } from '../../types';
 import { TokenResponse } from '../../types/auth';
-import { Request, Response } from 'express';
+import { Request, RequestHandler, Response } from 'express';
 import { generateToken } from '../../utils/jwt';
 import crypto from 'crypto';
 import { parseEnvToInt } from '../../utils/parseEnv';
 
 const ACCESS_EXPIRY_SECOND = parseEnvToInt(process.env.ACCESS_TOKEN_EXPIRY_SECOND, 3600);
 
-export const refresh = async (req: Request, res: Response<TokenResponse | BasicResponse>) => {
+export const refreshHandler: RequestHandler = (req, res) => {
+  refresh(req, res);
+};
+
+const refresh = async (req: Request, res: Response<TokenResponse | BasicResponse>) => {
   try {
     const payload = req.payload;
     if (!payload) {

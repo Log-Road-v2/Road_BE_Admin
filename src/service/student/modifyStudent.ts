@@ -1,8 +1,16 @@
-import { AuthenticatedRequest, BasicResponse } from '../../types';
-import { Response } from 'express';
+import { BasicResponse } from '../../types';
+import { Request, RequestHandler, Response } from 'express';
 import { prisma } from '../../config/prisma';
+import { StudentParams, ModifyStudentRequest } from '../../types/student';
 
-export const modifyStudent = async (req: AuthenticatedRequest, res: Response<BasicResponse>) => {
+export const modifyStudentHandler: RequestHandler<StudentParams, BasicResponse, ModifyStudentRequest> = (req, res) => {
+  modifyStudent(req, res);
+};
+
+const modifyStudent = async (
+  req: Request<StudentParams, BasicResponse, ModifyStudentRequest>,
+  res: Response<BasicResponse>
+) => {
   try {
     const studentIdStr = req.params.studentId;
     if (!/^\d+$/.test(studentIdStr)) {
@@ -10,7 +18,7 @@ export const modifyStudent = async (req: AuthenticatedRequest, res: Response<Bas
         message: '유효하지 않은 사용자 ID'
       });
     }
-    const studentId = BigInt(req.params.studentId);
+    const studentId = BigInt(studentIdStr);
 
     const { state, name, generation, grade, classNumber, studentNumber } = req.body;
     if (!state || !name || !generation || !grade || !classNumber || !studentNumber) {

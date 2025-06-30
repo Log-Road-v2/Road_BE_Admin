@@ -1,10 +1,14 @@
-import { AuthenticatedRequest, BasicResponse } from '../../types';
-import { Response } from 'express';
+import { BasicResponse } from '../../types';
+import { Request, RequestHandler, Response } from 'express';
 import { prisma } from '../../config/prisma';
 import { read, utils } from 'xlsx';
 import { FileFirstGradeStudentData, FileStudentData } from '../../types/student';
 
-export const uploadStudent = async (req: AuthenticatedRequest, res: Response<BasicResponse>) => {
+export const uploadStudentHandler: RequestHandler = (req, res) => {
+  uploadStudent(req, res);
+};
+
+const uploadStudent = async (req: Request, res: Response<BasicResponse>) => {
   try {
     if (!req.file) {
       return res.status(400).json({

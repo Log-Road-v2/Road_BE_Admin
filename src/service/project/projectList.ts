@@ -11,7 +11,7 @@ export const projectListHandler: RequestHandler<
   ProjectListResponse | BasicResponse,
   unknown,
   ProjectListQuery
-> = async (req, res) => {
+> = (req, res) => {
   projectList(req, res);
 };
 

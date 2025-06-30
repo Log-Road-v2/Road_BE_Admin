@@ -1,5 +1,5 @@
 import { prisma, Role } from '../../config/prisma';
-import { Request, Response } from 'express';
+import { Request, RequestHandler, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { SignUpRequest, TokenResponse } from '../../types/auth';
 import { generateToken } from '../../utils/jwt';
@@ -11,8 +11,12 @@ import { parseEnvToInt } from '../../utils/parseEnv';
 const ACCESS_EXPIRY_SECOND = parseEnvToInt(process.env.ACCESS_TOKEN_EXPIRY_SECOND, 3600);
 const REFRESH_EXPIRY_SECOND = parseEnvToInt(process.env.REFRESH_TOKEN_EXPIRY_SECOND, 604800);
 
-export const signUp = async (
-  req: Request<{}, TokenResponse | BasicResponse, SignUpRequest>,
+export const signUpHandler: RequestHandler<unknown, TokenResponse | BasicResponse, SignUpRequest> = (req, res) => {
+  signUp(req, res);
+};
+
+const signUp = async (
+  req: Request<unknown, TokenResponse | BasicResponse, SignUpRequest>,
   res: Response<TokenResponse | BasicResponse>
 ) => {
   const { role, email, password, name } = req.body;

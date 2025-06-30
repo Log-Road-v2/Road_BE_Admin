@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, RequestHandler, Response } from 'express';
 import { prisma } from '../../config/prisma';
 import { BasicResponse } from '../../types';
 import { SearchStudentQuery, SearchStudentResponse, StudentInfo } from '../../types/student';
@@ -6,8 +6,17 @@ import { parseEnvToInt } from '../../utils/parseEnv';
 
 const PAGE_SIZE = parseEnvToInt(process.env.STUDENT_PAGE_SIZE, 10);
 
-export const searchStudents = async (
-  req: Request<Record<string, never>, BasicResponse | SearchStudentResponse, Record<string, never>, SearchStudentQuery>,
+export const searchStudentsHandler: RequestHandler<
+  unknown,
+  SearchStudentResponse | BasicResponse,
+  unknown,
+  SearchStudentQuery
+> = (req, res) => {
+  searchStudents(req, res);
+};
+
+const searchStudents = async (
+  req: Request<unknown, SearchStudentResponse | BasicResponse, unknown, SearchStudentQuery>,
   res: Response<SearchStudentResponse | BasicResponse>
 ) => {
   try {

@@ -1,8 +1,13 @@
-import { AuthenticatedRequest, BasicResponse } from '../../types';
-import { Response } from 'express';
+import { BasicResponse } from '../../types';
+import { Request, RequestHandler, Response } from 'express';
 import { prisma } from '../../config/prisma';
+import { StudentParams } from '../../types/student';
 
-export const removeStudent = async (req: AuthenticatedRequest, res: Response<BasicResponse>) => {
+export const removeStudentHandler: RequestHandler<StudentParams, BasicResponse> = (req, res) => {
+  removeStudent(req, res);
+};
+
+const removeStudent = async (req: Request<StudentParams, BasicResponse>, res: Response<BasicResponse>) => {
   try {
     const studentIdStr = req.params.studentId;
     if (!/^\d+$/.test(studentIdStr)) {
