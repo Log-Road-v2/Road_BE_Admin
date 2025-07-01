@@ -27,3 +27,18 @@ export interface ContestDetailResponse {
     name: string;
   }[];
 }
+
+export interface ContestRequest {
+  name: string;
+  startDate: Date;
+  endDate: Date;
+  purpose: string;
+  award: {
+    name: string;
+    awardCount: number;
+  }[];
+}
+
+export interface ChangeContestStateRequest {
+  state: ContestState;
+}
