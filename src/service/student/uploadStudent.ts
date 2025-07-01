@@ -43,7 +43,7 @@ const uploadStudent = async (req: Request, res: Response<BasicResponse>) => {
         const data = utils.sheet_to_json(workbook.Sheets[sheetName], {
           range: 3,
           defval: '',
-          header: numGrade === 1 ? ['studentNum', 'name'] : ['studentNum', 'name', 'gender', 'beforeStudentNum', 'etc']
+          header: numGrade === 1 ? ['studentNum', 'name'] : ['studentNum', 'name', 'beforeStudentNum']
         });
 
         if (numGrade === 1) {
