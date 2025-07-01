@@ -3,6 +3,7 @@ import { prisma } from '../../config/prisma';
 import { BasicResponse } from '../../types';
 import { SearchStudentQuery, SearchStudentResponse, StudentInfo } from '../../types/student';
 import { parseEnvToInt } from '../../utils/parseEnv';
+import { Prisma } from '@prisma/client';
 
 const PAGE_SIZE = parseEnvToInt(process.env.STUDENT_PAGE_SIZE, 10);
 
@@ -45,7 +46,7 @@ const searchStudents = async (
               })()
             })
           }
-        : { name: { contains: keyword } }
+        : { name: { contains: keyword, mode: Prisma.QueryMode.insensitive } }
       : {
           ...(grade && { grade: Number(grade) }),
           ...(classNumber && { classNumber: Number(classNumber) })

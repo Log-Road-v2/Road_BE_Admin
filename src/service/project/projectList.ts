@@ -3,6 +3,7 @@ import { Request, RequestHandler, Response } from 'express';
 import { ProjectListData, ProjectListParams, ProjectListQuery, ProjectListResponse } from '../../types/project';
 import { prisma, ProjectState } from '../../config/prisma';
 import { parseEnvToInt } from '../../utils/parseEnv';
+import { Prisma } from '@prisma/client';
 
 const PAGE_SIZE = parseEnvToInt(process.env.PROJECT_PAGE_SIZE, 20);
 
@@ -24,6 +25,7 @@ const projectList = async (
 
     const offset = parseInt(req.query.offset ?? '1');
     const state = req.query.state || 'ALL';
+    const keyword = req.query.keyword?.trim();
 
     if (!contestId || state === 'WRITING') {
       return res.status(400).json({
@@ -42,7 +44,8 @@ const projectList = async (
       contestId: contestId,
       ...(!state || state === 'ALL'
         ? { state: { in: [ProjectState.PENDING, ProjectState.APPROVAL, ProjectState.MODIFY, ProjectState.REJECTED] } }
-        : { state: state })
+        : { state: state }),
+      ...(keyword && { projectName: { contains: keyword, mode: Prisma.QueryMode.insensitive } })
     };
 
     const [projects, totalProjects] = await prisma.$transaction([

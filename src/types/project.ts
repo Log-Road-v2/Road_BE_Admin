@@ -9,6 +9,7 @@ export interface ProjectListQuery {
   [key: string]: string | undefined;
   state?: ProjectState | 'ALL';
   offset?: string;
+  keyword?: string;
 }
 
 export interface ProjectListData {
