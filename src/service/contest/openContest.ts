@@ -1,13 +1,13 @@
 import { Request, RequestHandler, Response } from 'express';
 import { BasicResponse } from '../../types';
-import { OpenContestRequest } from '../../types/contest';
+import { ContestRequest } from '../../types/contest';
 import { prisma } from '../../config/prisma';
 
-export const openContestHandler: RequestHandler<unknown, BasicResponse, OpenContestRequest> = async (req, res) => {
+export const openContestHandler: RequestHandler<unknown, BasicResponse, ContestRequest> = async (req, res) => {
   await openContest(req, res);
 };
 
-const openContest = async (req: Request<unknown, BasicResponse, OpenContestRequest>, res: Response<BasicResponse>) => {
+const openContest = async (req: Request<unknown, BasicResponse, ContestRequest>, res: Response<BasicResponse>) => {
   try {
     const { name, startDate, endDate, purpose, award } = req.body;
     if (!name || !startDate || !endDate || !purpose || !award || award.length === 0) {

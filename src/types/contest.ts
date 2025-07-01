@@ -28,7 +28,7 @@ export interface ContestDetailResponse {
   }[];
 }
 
-export interface OpenContestRequest {
+export interface ContestRequest {
   name: string;
   startDate: Date;
   endDate: Date;
