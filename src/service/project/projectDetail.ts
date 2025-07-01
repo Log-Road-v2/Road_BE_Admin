@@ -56,8 +56,8 @@ const projectDetail = async (
       skills: skills,
       introduction: project.introduction || '',
       description: project.description || '',
-      startDate: formatDate(project.startDate),
-      endDate: formatDate(project.endDate),
+      startDate: project.startDate,
+      endDate: project.endDate,
       image: project.image,
       video: project.video,
       state: project.state
