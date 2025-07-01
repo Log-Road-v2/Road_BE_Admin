@@ -9,14 +9,7 @@ export const removeStudentHandler: RequestHandler<StudentParams, BasicResponse> 
 
 const removeStudent = async (req: Request<StudentParams, BasicResponse>, res: Response<BasicResponse>) => {
   try {
-    const studentIdStr = req.params.studentId;
-    if (!/^\d+$/.test(studentIdStr)) {
-      return res.status(400).json({
-        message: '유효하지 않은 사용자 ID'
-      });
-    }
     const studentId = BigInt(req.params.studentId);
-
     const student = await prisma.student.findUnique({ where: { id: studentId } });
     if (!student) {
       return res.status(404).json({
