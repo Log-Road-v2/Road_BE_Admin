@@ -1,4 +1,7 @@
-import { projectDetail } from './project/projectDetail';
-import { projectList } from './project/projectList';
+import { projectDetailHandler } from './project/projectDetail';
+import { projectListHandler } from './project/projectList';
 
-export default { projectList, projectDetail };
+export default {
+  projectDetailHandler,
+  projectListHandler
+};

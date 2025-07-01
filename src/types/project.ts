@@ -25,6 +25,11 @@ export interface ProjectListResponse {
   projects: ProjectListData[];
 }
 
+export interface ProjectParams {
+  [key: string]: string;
+  projectId: string;
+}
+
 export interface ProjectDetailResponse {
   contestName: string;
   projectName: string;

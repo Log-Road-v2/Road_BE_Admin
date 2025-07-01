@@ -1,11 +1,12 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import { getApiLimit } from '../middleware/limit';
 import { verifyJWT } from '../middleware/jwt';
 import { checkRight } from '../middleware/checkRight';
-import { projectListHandler } from '../service/project/projectList';
+import project from '../service/project';
 
 const app = express.Router();
 
-app.get('/:contestId', getApiLimit, verifyJWT, checkRight, projectListHandler);
+app.get('/detail/:projectId', getApiLimit, verifyJWT, checkRight, project.projectDetailHandler);
+app.get('/:contestId', getApiLimit, verifyJWT, checkRight, project.projectListHandler);
 
 export default app;

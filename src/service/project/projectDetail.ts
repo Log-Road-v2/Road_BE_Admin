@@ -1,10 +1,17 @@
-import { AuthenticatedRequest, BasicResponse } from '../../types';
-import { Response } from 'express';
-import { ProjectDetailResponse } from '../../types/project';
+import { BasicResponse } from '../../types';
+import { Request, RequestHandler, Response } from 'express';
+import { ProjectDetailResponse, ProjectParams } from '../../types/project';
 import { prisma } from '../../config/prisma';
 
-export const projectDetail = async (
-  req: AuthenticatedRequest,
+export const projectDetailHandler: RequestHandler<ProjectParams, ProjectDetailResponse | BasicResponse> = async (
+  req,
+  res
+) => {
+  await projectDetail(req, res);
+};
+
+const projectDetail = async (
+  req: Request<ProjectParams, ProjectDetailResponse | BasicResponse>,
   res: Response<ProjectDetailResponse | BasicResponse>
 ) => {
   try {
