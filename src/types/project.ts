@@ -45,3 +45,8 @@ export interface ProjectDetailResponse {
   video: string | null;
   state: ProjectState;
 }
+
+export interface ChangeProjectStateRequest {
+  state: ProjectState;
+  content?: string | null;
+}
