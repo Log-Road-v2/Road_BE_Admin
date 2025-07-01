@@ -3,8 +3,8 @@ import { ContestState } from '../config/prisma';
 export interface ContestListData {
   id: string;
   name: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   state: ContestState;
 }
 
@@ -20,10 +20,10 @@ export interface ContestParams {
 export interface ContestDetailResponse {
   id: string;
   name: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   purpose: string;
-  award: {
+  awards: {
     name: string;
   }[];
 }
@@ -33,7 +33,7 @@ export interface ContestRequest {
   startDate: Date;
   endDate: Date;
   purpose: string;
-  award: {
+  awards: {
     name: string;
     awardCount: number;
   }[];

@@ -13,8 +13,8 @@ const modifyContest = async (
 ) => {
   try {
     const contestId = BigInt(req.params.contestId);
-    const { name, startDate, endDate, purpose, award } = req.body;
-    if (!name || !startDate || !endDate || !purpose || !award || award.length === 0) {
+    const { name, startDate, endDate, purpose, awards } = req.body;
+    if (!name || !startDate || !endDate || !purpose || !awards || awards.length === 0) {
       return res.status(400).json({
         message: '올바르지 않은 입력값'
       });
@@ -41,9 +41,9 @@ const modifyContest = async (
         where: { contestId: contestId }
       });
       await tx.award.createMany({
-        data: award.map((a) => ({
-          name: a.name,
-          awardCount: a.awardCount,
+        data: awards.map((award) => ({
+          name: award.name,
+          awardCount: award.awardCount,
           contestId: contestId
         }))
       });

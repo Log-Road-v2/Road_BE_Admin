@@ -40,8 +40,8 @@ export interface ProjectDetailResponse {
   skills: string[];
   introduction: string;
   description: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   image: string | null;
   video: string | null;
   state: ProjectState;

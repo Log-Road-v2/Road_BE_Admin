@@ -2,6 +2,7 @@ import { Request, RequestHandler, Response } from 'express';
 import { ContestDetailResponse, ContestParams } from '../../types/contest';
 import { BasicResponse } from '../../types';
 import { prisma } from '../../config/prisma';
+import { formatDate } from '../../utils/format';
 
 export const contestDetailHandler: RequestHandler<ContestParams, ContestDetailResponse | BasicResponse> = async (
   req,
@@ -35,9 +36,12 @@ const contestDetail = async (
     }
 
     return res.status(200).json({
-      ...contest,
       id: contest.id.toString(),
-      purpose: contest.purpose || ''
+      name: contest.name,
+      purpose: contest.purpose || '',
+      startDate: formatDate(contest.startDate),
+      endDate: formatDate(contest.endDate),
+      awards: contest.award
     });
   } catch (err) {
     console.error(err);
