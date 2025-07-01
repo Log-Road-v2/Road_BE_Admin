@@ -7,5 +7,6 @@ import contest from '../service/contest';
 const app = express.Router();
 
 app.get('/', getApiLimit, verifyJWT, checkRight, contest.contestListHandler);
+app.get('/:contestId', getApiLimit, verifyJWT, checkRight, contest.contestDetailHandler);
 
 export default app;

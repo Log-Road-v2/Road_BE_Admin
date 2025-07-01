@@ -11,3 +11,19 @@ export interface ContestListData {
 export interface ContestListResponse {
   contests: ContestListData[];
 }
+
+export interface ContestParams {
+  [key: string]: string;
+  contestId: string;
+}
+
+export interface ContestDetailResponse {
+  id: string;
+  name: string;
+  startDate: Date;
+  endDate: Date;
+  purpose: string;
+  award: {
+    name: string;
+  }[];
+}
