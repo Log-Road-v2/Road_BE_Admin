@@ -13,7 +13,7 @@ const removeProject = async (req: Request<ProjectParams, BasicResponse>, res: Re
     const project = await prisma.project.findUnique({ where: { id: projectId } });
     if (!project) {
       return res.status(404).json({
-        message: '존재하지 않는 학생'
+        message: '존재하지 않는 프로젝트'
       });
     }
 
