@@ -6,7 +6,7 @@ import router from './controller';
 configDotenv();
 const port: Number = Number(process.env.PORT!) || 8080;
 const corsOptions: CorsOptions = {
-  origin: 'localhost',
+  origin: '*',
   methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
   credentials: true
 };
