@@ -9,5 +9,6 @@ const app = express.Router();
 app.get('/detail/:projectId', getApiLimit, verifyJWT, checkRight, project.projectDetailHandler);
 app.get('/:contestId', getApiLimit, verifyJWT, checkRight, project.projectListHandler);
 app.patch('/:projectId', apiLimit, verifyJWT, checkRight, project.changeProjectStateHandler);
+app.delete('/:projectId', apiLimit, verifyJWT, checkRight, project.removeProjectHandler);
 
 export default app;
