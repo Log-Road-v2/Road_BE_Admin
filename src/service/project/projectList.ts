@@ -15,7 +15,7 @@ export const projectListHandler: RequestHandler<
   await projectList(req, res);
 };
 
-export const projectList = async (
+const projectList = async (
   req: Request<ProjectListParams, ProjectListResponse | BasicResponse, unknown, ProjectListQuery>,
   res: Response<ProjectListResponse | BasicResponse>
 ) => {

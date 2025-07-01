@@ -24,3 +24,24 @@ export interface ProjectListResponse {
   totalProjects: number;
   projects: ProjectListData[];
 }
+
+export interface ProjectParams {
+  [key: string]: string;
+  projectId: string;
+}
+
+export interface ProjectDetailResponse {
+  contestName: string;
+  projectName: string;
+  authorCategory: Author;
+  teamName: string | null;
+  member: string[];
+  skills: string[];
+  introduction: string;
+  description: string;
+  startDate: Date;
+  endDate: Date;
+  image: string | null;
+  video: string | null;
+  state: ProjectState;
+}
