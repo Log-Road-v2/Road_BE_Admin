@@ -2,7 +2,6 @@ import { BasicResponse } from '../../types';
 import { Request, RequestHandler, Response } from 'express';
 import { ProjectDetailResponse, ProjectParams } from '../../types/project';
 import { prisma } from '../../config/prisma';
-import { formatDate } from '../../utils/format';
 
 export const projectDetailHandler: RequestHandler<ProjectParams, ProjectDetailResponse | BasicResponse> = async (
   req,
@@ -56,8 +55,8 @@ const projectDetail = async (
       skills: skills,
       introduction: project.introduction || '',
       description: project.description || '',
-      startDate: formatDate(project.startDate),
-      endDate: formatDate(project.endDate),
+      startDate: project.startDate,
+      endDate: project.endDate,
       image: project.image,
       video: project.video,
       state: project.state

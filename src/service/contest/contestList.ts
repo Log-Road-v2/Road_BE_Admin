@@ -2,7 +2,6 @@ import { Request, RequestHandler, Response } from 'express';
 import { BasicResponse } from '../../types';
 import { ContestListData, ContestListResponse } from '../../types/contest';
 import { prisma } from '../../config/prisma';
-import { formatDate } from '../../utils/format';
 
 export const contestListHandler: RequestHandler = async (req, res) => {
   await contestList(req, res);
@@ -23,8 +22,8 @@ const contestList = async (req: Request, res: Response<ContestListResponse | Bas
     const result: ContestListData[] = contests.map((contest) => ({
       id: contest.id.toString(),
       name: contest.name,
-      startDate: formatDate(contest.startDate),
-      endDate: formatDate(contest.endDate),
+      startDate: contest.startDate,
+      endDate: contest.endDate,
       state: contest.state
     }));
 

@@ -2,7 +2,6 @@ import { Request, RequestHandler, Response } from 'express';
 import { ContestDetailResponse, ContestParams } from '../../types/contest';
 import { BasicResponse } from '../../types';
 import { prisma } from '../../config/prisma';
-import { formatDate } from '../../utils/format';
 
 export const contestDetailHandler: RequestHandler<ContestParams, ContestDetailResponse | BasicResponse> = async (
   req,
@@ -39,8 +38,8 @@ const contestDetail = async (
       id: contest.id.toString(),
       name: contest.name,
       purpose: contest.purpose || '',
-      startDate: formatDate(contest.startDate),
-      endDate: formatDate(contest.endDate),
+      startDate: contest.startDate,
+      endDate: contest.endDate,
       awards: contest.award
     });
   } catch (err) {
