@@ -10,5 +10,6 @@ app.get('/', getApiLimit, verifyJWT, checkRight, contest.contestListHandler);
 app.post('/', apiLimit, verifyJWT, checkRight, contest.openContestHandler);
 app.get('/:contestId', getApiLimit, verifyJWT, checkRight, contest.contestDetailHandler);
 app.patch('/:contestId', apiLimit, verifyJWT, checkRight, contest.modifyContestHandler);
+app.patch('/:contestId/state', apiLimit, verifyJWT, checkRight, contest.changeContestStateHandler);
 
 export default app;

@@ -38,3 +38,7 @@ export interface ContestRequest {
     awardCount: number;
   }[];
 }
+
+export interface ChangeContestStateRequest {
+  state: ContestState;
+}
