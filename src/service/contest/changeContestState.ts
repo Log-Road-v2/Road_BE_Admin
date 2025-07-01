@@ -18,6 +18,11 @@ const changeContestState = async (
   try {
     const contestId = BigInt(req.params.contestId);
     const state = req.body.state;
+    if (!contestId || !state) {
+      return res.status(400).json({
+        message: '올바르지 않은 입력값'
+      });
+    }
 
     const contest = await prisma.contest.findUnique({
       select: { id: true },
@@ -30,7 +35,7 @@ const changeContestState = async (
     }
 
     await prisma.contest.update({
-      where: { id: contest.id },
+      where: { id: contestId },
       data: { state: state }
     });
 
