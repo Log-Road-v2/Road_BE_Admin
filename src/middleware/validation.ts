@@ -63,3 +63,34 @@ export const validateProjectId = async (req: Request, res: Response<BasicRespons
     return;
   }
 };
+
+export const validateStudentId = async (req: Request, res: Response<BasicResponse>, next: NextFunction) => {
+  try {
+    const studentId = BigInt(req.params.studentId);
+    if (!studentId) {
+      res.status(400).json({
+        message: '올바르지 않은 파라미터'
+      });
+      return;
+    }
+
+    const student = await prisma.student.findUnique({
+      select: { id: true },
+      where: { id: studentId }
+    });
+    if (!student) {
+      res.status(404).json({
+        message: '존재하지 않는 학생'
+      });
+      return;
+    }
+
+    next();
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({
+      message: '올바르지 않은 파라미터'
+    });
+    return;
+  }
+};
