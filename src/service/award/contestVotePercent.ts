@@ -40,7 +40,7 @@ const contestVotePercent = async (
 
     const voteRate =
       totalUserCount === 0 || votedUsers.length === 0
-        ? '0'
+        ? '0.0'
         : Number((votedUsers.length / totalUserCount) * 100).toFixed(1);
 
     return res.status(200).json({
