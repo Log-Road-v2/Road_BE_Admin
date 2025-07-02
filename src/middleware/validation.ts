@@ -2,95 +2,41 @@ import { NextFunction, Request, Response } from 'express';
 import { BasicResponse } from '../types';
 import { prisma } from '../config/prisma';
 
-export const validateContestId = async (req: Request, res: Response<BasicResponse>, next: NextFunction) => {
-  try {
-    const contestId = BigInt(req.params.contestId);
-    if (!contestId) {
+const createEntityValidate = (entityName: string, paramName: string, prismaModel: any, notFoundMessage: string) => {
+  return async (req: Request, res: Response<BasicResponse>, next: NextFunction) => {
+    try {
+      const entityId = BigInt(req.params[paramName]);
+      if (!entityId || entityId < 0) {
+        res.status(400).json({
+          message: '올바르지 않은 파라미터'
+        });
+        return;
+      }
+
+      const entity = await prismaModel.findUnique({
+        select: { id: true },
+        where: { id: entityId }
+      });
+      if (!entity) {
+        res.status(404).json({
+          message: notFoundMessage
+        });
+        return;
+      }
+
+      next();
+    } catch (err) {
+      console.error(err);
       res.status(400).json({
         message: '올바르지 않은 파라미터'
       });
       return;
     }
-
-    const contest = await prisma.contest.findUnique({
-      select: { id: true },
-      where: { id: contestId }
-    });
-    if (!contest) {
-      res.status(404).json({
-        message: '존재하지 않는 대회'
-      });
-      return;
-    }
-
-    next();
-  } catch (err) {
-    console.error(err);
-    res.status(400).json({
-      message: '올바르지 않은 파라미터'
-    });
-    return;
-  }
+  };
 };
 
-export const validateProjectId = async (req: Request, res: Response<BasicResponse>, next: NextFunction) => {
-  try {
-    const projectId = BigInt(req.params.projectId);
-    if (!projectId) {
-      res.status(400).json({
-        message: '올바르지 않은 파라미터'
-      });
-      return;
-    }
+export const validateContestId = createEntityValidate('contest', 'contestId', prisma.contest, '존재하지 않는 대회');
 
-    const project = await prisma.project.findUnique({
-      select: { id: true },
-      where: { id: projectId }
-    });
-    if (!project) {
-      res.status(404).json({
-        message: '존재하지 않는 프로젝트'
-      });
-      return;
-    }
+export const validateProjectId = createEntityValidate('project', 'projectId', prisma.project, '존재하지 않는 프로젝트');
 
-    next();
-  } catch (err) {
-    console.error(err);
-    res.status(400).json({
-      message: '올바르지 않은 파라미터'
-    });
-    return;
-  }
-};
-
-export const validateStudentId = async (req: Request, res: Response<BasicResponse>, next: NextFunction) => {
-  try {
-    const studentId = BigInt(req.params.studentId);
-    if (!studentId) {
-      res.status(400).json({
-        message: '올바르지 않은 파라미터'
-      });
-      return;
-    }
-
-    const student = await prisma.student.findUnique({
-      select: { id: true },
-      where: { id: studentId }
-    });
-    if (!student) {
-      res.status(404).json({
-        message: '존재하지 않는 학생'
-      });
-      return;
-    }
-
-    next();
-  } catch (err) {
-    console.error(err);
-    res.status(400).json({
-      message: '올바르지 않은 파라미터'
-    });
-    return;
-  }
-};
+export const validateStudentId = createEntityValidate('student', 'studentId', prisma.student, '존재하지 않는 학생');
