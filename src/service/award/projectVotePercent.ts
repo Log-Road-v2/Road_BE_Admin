@@ -77,8 +77,8 @@ const projectVotePercent = async (
         projectName: project.projectName,
         introduction: project.introduction || '',
         image: buildFileUrl(project.image),
-        studentPercent: totalStudentVote > 0 ? Math.round((studentVote / totalStudentVote) * 100) : 0,
-        teacherPercent: totalTeacherVote > 0 ? Math.round((teacherVote / totalTeacherVote) * 100) : 0
+        studentPercent: totalProjects > 0 ? Number((studentVote / totalStudentVote) * 100).toFixed(1) : '0',
+        teacherPercent: totalTeacherVote > 0 ? Number((teacherVote / totalTeacherVote) * 100).toFixed(1) : '0'
       };
     });
 
