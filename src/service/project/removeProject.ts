@@ -10,12 +10,6 @@ export const removeProjectHandler: RequestHandler<ProjectParams, BasicResponse> 
 const removeProject = async (req: Request<ProjectParams, BasicResponse>, res: Response<BasicResponse>) => {
   try {
     const projectId = BigInt(req.params.projectId);
-    const project = await prisma.project.findUnique({ where: { id: projectId } });
-    if (!project) {
-      return res.status(404).json({
-        message: '존재하지 않는 프로젝트'
-      });
-    }
 
     await prisma.project.delete({ where: { id: projectId } });
 

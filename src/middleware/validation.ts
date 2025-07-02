@@ -11,6 +11,7 @@ export const validateContestId = async (req: Request, res: Response<BasicRespons
       });
       return;
     }
+
     const contest = await prisma.contest.findUnique({
       select: { id: true },
       where: { id: contestId }
@@ -18,6 +19,37 @@ export const validateContestId = async (req: Request, res: Response<BasicRespons
     if (!contest) {
       res.status(404).json({
         message: '존재하지 않는 대회'
+      });
+      return;
+    }
+
+    next();
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({
+      message: '올바르지 않은 파라미터'
+    });
+    return;
+  }
+};
+
+export const validateProjectId = async (req: Request, res: Response<BasicResponse>, next: NextFunction) => {
+  try {
+    const projectId = BigInt(req.params.projectId);
+    if (!projectId) {
+      res.status(400).json({
+        message: '올바르지 않은 파라미터'
+      });
+      return;
+    }
+
+    const project = await prisma.project.findUnique({
+      select: { id: true },
+      where: { id: projectId }
+    });
+    if (!project) {
+      res.status(404).json({
+        message: '존재하지 않는 프로젝트'
       });
       return;
     }
