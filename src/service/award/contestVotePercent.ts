@@ -17,29 +17,40 @@ const contestVotePercent = async (
 ) => {
   try {
     const contestId = BigInt(req.params.contestId);
+    const contest = await prisma.contest.findUnique({
+      select: { id: true },
+      where: { id: contestId }
+    });
+    if (!contest) {
+      return res.status(404).json({
+        message: '존재하지 않는 대회'
+      });
+    }
+
     const contestProjects = await prisma.project.findMany({
       select: { id: true },
       where: { contestId: contestId }
     });
-    const projectIdList = contestProjects.map((p) => p.id);
-    if (projectIdList.length === 0) {
+    if (contestProjects.length === 0) {
       return res.status(404).json({
         message: '해당 대회에 등록된 프로젝트가 없습니다'
       });
     }
+
+    const projectIdList = contestProjects.map((p) => p.id);
 
     const votedUsers = await prisma.vote.findMany({
       select: { userId: true },
       where: { projectId: { in: projectIdList } },
       distinct: ['userId']
     });
-    const votedUserIdList = votedUsers.map((v) => v.userId);
 
-    const allUser = await prisma.user.findMany({
-      select: { id: true }
-    });
+    const totalUserCount = await prisma.user.count();
 
-    const voteRate = Number((votedUserIdList.length / allUser.length) * 100).toFixed(1);
+    const voteRate =
+      totalUserCount === 0 || votedUsers.length === 0
+        ? '0'
+        : Number((votedUsers.length / totalUserCount) * 100).toFixed(1);
 
     return res.status(200).json({
       totalPercent: voteRate
