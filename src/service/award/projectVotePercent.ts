@@ -26,16 +26,6 @@ const projectVotePercent = async (
     const orderBy = req.query.orderBy;
     const offset = parseInt(req.query.offset ?? '1');
 
-    const contest = await prisma.contest.findUnique({
-      select: { id: true },
-      where: { id: contestId }
-    });
-    if (!contest) {
-      return res.status(404).json({
-        message: '존재하지 않는 대회'
-      });
-    }
-
     const where = { contestId: contestId };
 
     const [projects, totalProjects] = await prisma.$transaction([

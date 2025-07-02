@@ -18,7 +18,7 @@ const changeContestState = async (
   try {
     const contestId = BigInt(req.params.contestId);
     const state = req.body.state;
-    if (!contestId || !state) {
+    if (!state) {
       return res.status(400).json({
         message: '올바르지 않은 입력값'
       });

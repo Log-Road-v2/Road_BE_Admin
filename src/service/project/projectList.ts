@@ -28,16 +28,9 @@ const projectList = async (
     const state = req.query.state || 'ALL';
     const keyword = req.query.keyword?.trim();
 
-    if (!contestId || state === 'WRITING') {
+    if (state === 'WRITING') {
       return res.status(400).json({
         message: '올바르지 않은 파라미터'
-      });
-    }
-
-    const contest = await prisma.contest.findUnique({ where: { id: contestId } });
-    if (!contest) {
-      return res.status(404).json({
-        message: '존재하지 않는 대회'
       });
     }
 

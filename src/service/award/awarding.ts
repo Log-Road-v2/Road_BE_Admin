@@ -11,15 +11,6 @@ export const awardingHandler: RequestHandler<ContestParams, BasicResponse, Award
 const awarding = async (req: Request<ContestParams, BasicResponse, AwardingRequest>, res: Response<BasicResponse>) => {
   try {
     const contestId = BigInt(req.params.contestId);
-    const contest = await prisma.contest.findUnique({
-      select: { id: true },
-      where: { id: contestId }
-    });
-    if (!contest) {
-      return res.status(404).json({
-        message: '존재하지 않는 대회'
-      });
-    }
 
     const { awards } = req.body;
     if (!awards) {

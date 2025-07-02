@@ -17,15 +17,6 @@ const contestVotePercent = async (
 ) => {
   try {
     const contestId = BigInt(req.params.contestId);
-    const contest = await prisma.contest.findUnique({
-      select: { id: true },
-      where: { id: contestId }
-    });
-    if (!contest) {
-      return res.status(404).json({
-        message: '존재하지 않는 대회'
-      });
-    }
 
     const contestProjects = await prisma.project.findMany({
       select: { id: true },
