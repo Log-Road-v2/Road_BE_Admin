@@ -20,13 +20,6 @@ const modifyContest = async (
       });
     }
 
-    const contest = await prisma.contest.findUnique({ where: { id: contestId } });
-    if (!contest) {
-      return res.status(404).json({
-        message: '존재하지 않는 대회'
-      });
-    }
-
     await prisma.$transaction(async (tx) => {
       await tx.contest.update({
         where: { id: contestId },

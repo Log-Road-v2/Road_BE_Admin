@@ -3,13 +3,21 @@ import { apiLimit, getApiLimit } from '../middleware/limit';
 import { verifyJWT } from '../middleware/jwt';
 import { checkRight } from '../middleware/checkRight';
 import contest from '../service/contest';
+import { validateContestId } from '../middleware/validation';
 
-const app = express.Router();
+const router = express.Router();
 
-app.get('/', getApiLimit, verifyJWT, checkRight, contest.contestListHandler);
-app.post('/', apiLimit, verifyJWT, checkRight, contest.openContestHandler);
-app.get('/:contestId', getApiLimit, verifyJWT, checkRight, contest.contestDetailHandler);
-app.patch('/:contestId', apiLimit, verifyJWT, checkRight, contest.modifyContestHandler);
-app.patch('/:contestId/state', apiLimit, verifyJWT, checkRight, contest.changeContestStateHandler);
+router.patch(
+  '/:contestId/state',
+  apiLimit,
+  validateContestId,
+  verifyJWT,
+  checkRight,
+  contest.changeContestStateHandler
+);
+router.get('/:contestId', getApiLimit, validateContestId, verifyJWT, checkRight, contest.contestDetailHandler);
+router.patch('/:contestId', apiLimit, validateContestId, verifyJWT, checkRight, contest.modifyContestHandler);
+router.get('/', getApiLimit, verifyJWT, checkRight, contest.contestListHandler);
+router.post('/', apiLimit, verifyJWT, checkRight, contest.openContestHandler);
 
-export default app;
+export default router;

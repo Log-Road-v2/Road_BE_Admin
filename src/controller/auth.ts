@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import auth from '../service/auth';
 import { apiLimit } from '../middleware/limit';
 import { verifyJWT } from '../middleware/jwt';

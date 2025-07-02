@@ -24,7 +24,13 @@ const changeProjectState = async (
       });
     }
 
-    const project = await prisma.project.findUnique({ where: { id: projectId } });
+    const project = await prisma.project.findUnique({
+      select: {
+        id: true,
+        state: true
+      },
+      where: { id: projectId }
+    });
     if (!project) {
       return res.status(404).json({
         message: '존재하지 않는 프로젝트'
@@ -38,9 +44,13 @@ const changeProjectState = async (
         });
       }
       if (state === 'REJECTED') {
-        await tx.feedback.create({
-          data: {
+        await tx.feedback.upsert({
+          where: { projectId: projectId },
+          create: {
             projectId: projectId,
+            content: content || ''
+          },
+          update: {
             content: content || ''
           }
         });

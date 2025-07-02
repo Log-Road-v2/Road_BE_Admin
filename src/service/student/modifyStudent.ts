@@ -15,13 +15,7 @@ const modifyStudent = async (
   res: Response<BasicResponse>
 ) => {
   try {
-    const studentIdStr = req.params.studentId;
-    if (!/^\d+$/.test(studentIdStr)) {
-      return res.status(400).json({
-        message: '유효하지 않은 사용자 ID'
-      });
-    }
-    const studentId = BigInt(studentIdStr);
+    const studentId = BigInt(req.params.studentId);
 
     const { state, name, generation, grade, classNumber, studentNumber } = req.body;
     if (!state || !name || !generation || !grade || !classNumber || !studentNumber) {
@@ -48,13 +42,6 @@ const modifyStudent = async (
     if (isNaN(studentNumber) || studentNumber < 1) {
       return res.status(400).json({
         message: '번호는 양수여야 합니다'
-      });
-    }
-
-    const student = await prisma.student.findUnique({ where: { id: studentId } });
-    if (!student) {
-      return res.status(404).json({
-        message: '존재하지 않는 학생'
       });
     }
 
