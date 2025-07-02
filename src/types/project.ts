@@ -17,7 +17,7 @@ export interface ProjectListData {
   projectName: string;
   authorCategory: Author;
   introduction: string;
-  image: string;
+  image: string | null;
 }
 
 export interface ProjectListResponse {

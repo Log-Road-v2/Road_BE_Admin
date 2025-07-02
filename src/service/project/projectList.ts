@@ -6,6 +6,10 @@ import { parseEnvToInt } from '../../utils/parseEnv';
 import { Prisma } from '@prisma/client';
 
 const PAGE_SIZE = parseEnvToInt(process.env.PROJECT_PAGE_SIZE, 20);
+const IMAGE_SERVER_URL = process.env.IMAGE_SERVER_URL;
+if (!IMAGE_SERVER_URL) {
+  throw Error('image server url get failed from env');
+}
 
 export const projectListHandler: RequestHandler<
   ProjectListParams,
@@ -71,7 +75,7 @@ const projectList = async (
       ...project,
       id: project.id.toString(),
       introduction: project.introduction ?? '',
-      image: project.image ?? ''
+      image: project.image ? `${IMAGE_SERVER_URL}${project.image}` : null
     }));
 
     return res.status(200).json({
