@@ -51,3 +51,10 @@ export interface NonVoteListData {
 export interface NonVoteListResponse {
   nonVotes: NonVoteListData[];
 }
+
+export interface AwardingRequest {
+  awards: {
+    id: string;
+    projects: string[];
+  }[];
+}
