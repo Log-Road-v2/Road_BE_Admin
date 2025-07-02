@@ -2,11 +2,7 @@ import { BasicResponse } from '../../types';
 import { Request, RequestHandler, Response } from 'express';
 import { ProjectDetailResponse, ProjectParams } from '../../types/project';
 import { prisma } from '../../config/prisma';
-
-const IMAGE_SERVER_URL = process.env.IMAGE_SERVER_URL;
-if (!IMAGE_SERVER_URL) {
-  throw Error('image server url get failed from env');
-}
+import { buildFileUrl } from '../../utils/buildFileUrl';
 
 export const projectDetailHandler: RequestHandler<ProjectParams, ProjectDetailResponse | BasicResponse> = async (
   req,
@@ -62,8 +58,8 @@ const projectDetail = async (
       description: project.description || '',
       startDate: project.startDate,
       endDate: project.endDate,
-      image: project.image ? `${IMAGE_SERVER_URL}${project.image}` : null,
-      video: project.video ? `${IMAGE_SERVER_URL}${project.video}` : null,
+      image: buildFileUrl(project.image),
+      video: buildFileUrl(project.video),
       state: project.state
     });
   } catch (err) {
