@@ -23,7 +23,7 @@ const waitContestList = async (req: Request, res: Response<WaitContestListRepons
           }
         }
       },
-      where: { state: 'PENDING' }
+      where: { state: { in: ['VOTING', 'PENDING'] } }
     });
 
     const result: WaitContestListData[] = contests.map((contest) => ({
