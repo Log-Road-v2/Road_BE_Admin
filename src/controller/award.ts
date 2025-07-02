@@ -7,5 +7,6 @@ import award from '../service/award';
 const app = express.Router();
 
 app.get('/', getApiLimit, verifyJWT, checkRight, award.waitContestListHandler);
+app.get('/:contestId', getApiLimit, verifyJWT, checkRight, award.projectVotePercentHandler);
 
 export default app;

@@ -15,3 +15,24 @@ export interface AwardData {
 export interface WaitContestListReponse {
   contests: WaitContestListData[];
 }
+
+export interface ProjectVotePercentQuery {
+  [key: string]: string | undefined;
+  orderBy?: 'UPLOAD' | 'VOTE';
+  offset?: string;
+}
+
+export interface ProjectVotePercentData {
+  id: string;
+  projectName: string;
+  introduction: string;
+  image: string | null;
+  studentPercent: number;
+  teacherPercent: number;
+}
+
+export interface ProjectVotePercentResponse {
+  offset: number;
+  totalProjects: number;
+  projects: ProjectVotePercentData[];
+}
