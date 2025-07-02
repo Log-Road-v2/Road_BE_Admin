@@ -27,12 +27,16 @@ export interface ProjectVotePercentData {
   projectName: string;
   introduction: string;
   image: string | null;
-  studentPercent: number;
-  teacherPercent: number;
+  studentPercent: string;
+  teacherPercent: string;
 }
 
 export interface ProjectVotePercentResponse {
   offset: number;
   totalProjects: number;
   projects: ProjectVotePercentData[];
+}
+
+export interface ContestVotePercentResponse {
+  totalPercent: string;
 }

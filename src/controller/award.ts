@@ -8,5 +8,6 @@ const app = express.Router();
 
 app.get('/', getApiLimit, verifyJWT, checkRight, award.waitContestListHandler);
 app.get('/:contestId', getApiLimit, verifyJWT, checkRight, award.projectVotePercentHandler);
+app.get('/:contestId/total', getApiLimit, verifyJWT, checkRight, award.contestVotePercentHandler);
 
 export default app;
