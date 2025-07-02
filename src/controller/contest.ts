@@ -4,12 +4,12 @@ import { verifyJWT } from '../middleware/jwt';
 import { checkRight } from '../middleware/checkRight';
 import contest from '../service/contest';
 
-const app = express.Router();
+const router = express.Router();
 
-app.get('/', getApiLimit, verifyJWT, checkRight, contest.contestListHandler);
-app.post('/', apiLimit, verifyJWT, checkRight, contest.openContestHandler);
-app.get('/:contestId', getApiLimit, verifyJWT, checkRight, contest.contestDetailHandler);
-app.patch('/:contestId', apiLimit, verifyJWT, checkRight, contest.modifyContestHandler);
-app.patch('/:contestId/state', apiLimit, verifyJWT, checkRight, contest.changeContestStateHandler);
+router.get('/:contestId', getApiLimit, verifyJWT, checkRight, contest.contestDetailHandler);
+router.get('/', getApiLimit, verifyJWT, checkRight, contest.contestListHandler);
+router.post('/', apiLimit, verifyJWT, checkRight, contest.openContestHandler);
+router.patch('/:contestId/state', apiLimit, verifyJWT, checkRight, contest.changeContestStateHandler);
+router.patch('/:contestId', apiLimit, verifyJWT, checkRight, contest.modifyContestHandler);
 
-export default app;
+export default router;

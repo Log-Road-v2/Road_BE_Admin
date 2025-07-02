@@ -4,11 +4,11 @@ import { verifyJWT } from '../middleware/jwt';
 import { checkRight } from '../middleware/checkRight';
 import award from '../service/award';
 
-const app = express.Router();
+const router = express.Router();
 
-app.get('/', getApiLimit, verifyJWT, checkRight, award.waitContestListHandler);
-app.get('/:contestId', getApiLimit, verifyJWT, checkRight, award.projectVotePercentHandler);
-app.get('/:contestId/total', getApiLimit, verifyJWT, checkRight, award.contestVotePercentHandler);
-app.get('/:contestId/nonvote', getApiLimit, verifyJWT, checkRight, award.nonVoteListHandler);
+router.get('/:contestId/total', getApiLimit, verifyJWT, checkRight, award.contestVotePercentHandler);
+router.get('/:contestId/nonvote', getApiLimit, verifyJWT, checkRight, award.nonVoteListHandler);
+router.get('/:contestId', getApiLimit, verifyJWT, checkRight, award.projectVotePercentHandler);
+router.get('/', getApiLimit, verifyJWT, checkRight, award.waitContestListHandler);
 
-export default app;
+export default router;
