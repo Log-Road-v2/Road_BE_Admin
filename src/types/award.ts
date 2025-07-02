@@ -12,7 +12,7 @@ export interface AwardData {
   awardCount: number;
 }
 
-export interface WaitContestListReponse {
+export interface WaitContestListResponse {
   contests: WaitContestListData[];
 }
 

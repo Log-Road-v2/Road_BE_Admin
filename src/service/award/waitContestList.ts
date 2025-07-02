@@ -1,5 +1,5 @@
 import { Request, RequestHandler, Response } from 'express';
-import { WaitContestListData, WaitContestListReponse } from '../../types/award';
+import { WaitContestListData, WaitContestListResponse } from '../../types/award';
 import { BasicResponse } from '../../types';
 import { prisma } from '../../config/prisma';
 
@@ -7,7 +7,7 @@ export const waitContestListHandler: RequestHandler = async (req, res) => {
   await waitContestList(req, res);
 };
 
-const waitContestList = async (req: Request, res: Response<WaitContestListReponse | BasicResponse>) => {
+const waitContestList = async (req: Request, res: Response<WaitContestListResponse | BasicResponse>) => {
   try {
     const contests = await prisma.contest.findMany({
       select: {
