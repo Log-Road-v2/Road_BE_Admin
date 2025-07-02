@@ -2,6 +2,7 @@ import { BasicResponse } from '../../types';
 import { Request, RequestHandler, Response } from 'express';
 import { ProjectDetailResponse, ProjectParams } from '../../types/project';
 import { prisma } from '../../config/prisma';
+import { buildFileUrl } from '../../utils/buildFileUrl';
 
 export const projectDetailHandler: RequestHandler<ProjectParams, ProjectDetailResponse | BasicResponse> = async (
   req,
@@ -57,8 +58,8 @@ const projectDetail = async (
       description: project.description || '',
       startDate: project.startDate,
       endDate: project.endDate,
-      image: project.image,
-      video: project.video,
+      image: buildFileUrl(project.image),
+      video: buildFileUrl(project.video),
       state: project.state
     });
   } catch (err) {

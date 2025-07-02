@@ -4,6 +4,7 @@ import { ProjectListData, ProjectListParams, ProjectListQuery, ProjectListRespon
 import { prisma, ProjectState } from '../../config/prisma';
 import { parseEnvToInt } from '../../utils/parseEnv';
 import { Prisma } from '@prisma/client';
+import { buildFileUrl } from '../../utils/buildFileUrl';
 
 const PAGE_SIZE = parseEnvToInt(process.env.PROJECT_PAGE_SIZE, 20);
 
@@ -71,7 +72,7 @@ const projectList = async (
       ...project,
       id: project.id.toString(),
       introduction: project.introduction ?? '',
-      image: project.image ?? ''
+      image: buildFileUrl(project.image)
     }));
 
     return res.status(200).json({
