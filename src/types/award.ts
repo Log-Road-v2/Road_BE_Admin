@@ -40,3 +40,14 @@ export interface ProjectVotePercentResponse {
 export interface ContestVotePercentResponse {
   totalPercent: string;
 }
+
+export interface NonVoteListData {
+  name: string;
+  grade: number | null;
+  classNumber: number | null;
+  studentNumber: number | null;
+}
+
+export interface NonVoteListResponse {
+  nonVotes: NonVoteListData[];
+}
