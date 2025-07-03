@@ -33,7 +33,8 @@ const projectDetail = async (
         endDate: true,
         image: true,
         video: true,
-        state: true
+        state: true,
+        feedback: { select: { content: true } }
       },
       where: { id: projectId }
     });
@@ -60,7 +61,8 @@ const projectDetail = async (
       endDate: project.endDate,
       image: buildFileUrl(project.image),
       video: buildFileUrl(project.video),
-      state: project.state
+      state: project.state,
+      feedback: project.feedback ? project.feedback.content : null
     });
   } catch (err) {
     console.error(err);

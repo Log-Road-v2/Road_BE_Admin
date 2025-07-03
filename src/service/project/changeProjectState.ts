@@ -40,23 +40,23 @@ const changeProjectState = async (
     await prisma.$transaction(async (tx) => {
       if (project.state === 'REJECTED' && state !== 'REJECTED') {
         await tx.feedback.delete({
-          where: { projectId: projectId }
+          where: { projectId: project.id }
         });
-      }
-      if (state === 'REJECTED') {
-        await tx.feedback.upsert({
-          where: { projectId: projectId },
-          create: {
-            projectId: projectId,
-            content: content || ''
-          },
-          update: {
+      } else if (project.state === 'REJECTED' && state === 'REJECTED') {
+        await tx.feedback.update({
+          where: { projectId: project.id },
+          data: { content: content || '' }
+        });
+      } else if (state === 'REJECTED') {
+        await tx.feedback.create({
+          data: {
+            projectId: project.id,
             content: content || ''
           }
         });
       }
       await tx.project.update({
-        where: { id: projectId },
+        where: { id: project.id },
         data: {
           state: state
         }
