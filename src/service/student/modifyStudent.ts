@@ -45,17 +45,30 @@ const modifyStudent = async (
       });
     }
 
-    await prisma.student.update({
-      where: { id: studentId },
-      data: {
-        state: state,
-        name: name,
-        generation: generation,
-        grade: grade,
-        classNumber: classNumber,
-        studentNumber: studentNumber
-      }
-    });
+    if (state === 'SCHOOL') {
+      await prisma.student.update({
+        where: { id: studentId },
+        data: {
+          state: state,
+          name: name,
+          generation: generation,
+          grade: grade,
+          classNumber: classNumber,
+          studentNumber: studentNumber
+        }
+      });
+    } else {
+      await prisma.student.update({
+        where: { id: studentId },
+        data: {
+          state: state,
+          name: name,
+          grade: null,
+          classNumber: null,
+          studentNumber: null
+        }
+      });
+    }
 
     return res.status(200).json({
       message: '학생 정보 수정 성공'
