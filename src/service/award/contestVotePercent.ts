@@ -38,10 +38,7 @@ const contestVotePercent = async (
 
     const totalUserCount = await prisma.user.count();
 
-    const voteRate =
-      totalUserCount === 0 || votedUsers.length === 0
-        ? '0.0'
-        : Number((votedUsers.length / totalUserCount) * 100).toFixed(1);
+    const voteRate = totalUserCount === 0 || votedUsers.length === 0 ? 0.0 : (votedUsers.length / totalUserCount) * 100;
 
     return res.status(200).json({
       totalPercent: voteRate

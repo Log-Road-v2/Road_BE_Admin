@@ -27,8 +27,8 @@ export interface ProjectVotePercentData {
   projectName: string;
   introduction: string;
   image: string | null;
-  studentPercent: string;
-  teacherPercent: string;
+  studentPercent: number;
+  teacherPercent: number;
 }
 
 export interface ProjectVotePercentResponse {
@@ -38,7 +38,7 @@ export interface ProjectVotePercentResponse {
 }
 
 export interface ContestVotePercentResponse {
-  totalPercent: string;
+  totalPercent: number;
 }
 
 export interface NonVoteListData {
