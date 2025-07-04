@@ -18,7 +18,7 @@ const changeProjectState = async (
   try {
     const projectId = BigInt(req.params.projectId);
     const { state, content } = req.body;
-    if (!state || state === 'PENDING') {
+    if (!state) {
       return res.status(400).json({
         message: '유효하지 않은 입력값'
       });
