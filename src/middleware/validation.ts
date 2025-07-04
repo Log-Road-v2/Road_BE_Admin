@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { BasicResponse } from '../types';
 import { prisma } from '../config/prisma';
 
-const createEntityValidate = (entityName: string, paramName: string, prismaModel: any, notFoundMessage: string) => {
+const createEntityValidate = (paramName: string, prismaModel: any, notFoundMessage: string) => {
   return async (req: Request, res: Response<BasicResponse>, next: NextFunction) => {
     try {
       const entityId = BigInt(req.params[paramName]);
@@ -35,8 +35,8 @@ const createEntityValidate = (entityName: string, paramName: string, prismaModel
   };
 };
 
-export const validateContestId = createEntityValidate('contest', 'contestId', prisma.contest, '존재하지 않는 대회');
+export const validateContestId = createEntityValidate('contestId', prisma.contest, '존재하지 않는 대회');
 
-export const validateProjectId = createEntityValidate('project', 'projectId', prisma.project, '존재하지 않는 프로젝트');
+export const validateProjectId = createEntityValidate('projectId', prisma.project, '존재하지 않는 프로젝트');
 
-export const validateStudentId = createEntityValidate('student', 'studentId', prisma.student, '존재하지 않는 학생');
+export const validateStudentId = createEntityValidate('studentId', prisma.student, '존재하지 않는 학생');
