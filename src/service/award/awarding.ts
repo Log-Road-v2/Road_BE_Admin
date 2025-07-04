@@ -10,8 +10,6 @@ export const awardingHandler: RequestHandler<ContestParams, BasicResponse, Award
 
 const awarding = async (req: Request<ContestParams, BasicResponse, AwardingRequest>, res: Response<BasicResponse>) => {
   try {
-    const contestId = BigInt(req.params.contestId);
-
     const { awards } = req.body;
     if (!awards) {
       return res.status(400).json({
