@@ -40,9 +40,7 @@ const projectVotePercent = async (
         where: where,
         skip: PAGE_SIZE * Math.max(offset - 1, 0),
         take: PAGE_SIZE,
-        orderBy: {
-          ...(orderBy === 'UPLOAD' ? { id: 'asc' } : { vote: { _count: 'desc' } })
-        }
+        orderBy: orderBy === 'UPLOAD' ? { id: 'asc' } : { vote: { _count: 'desc' } }
       }),
       prisma.project.count({
         where: where
