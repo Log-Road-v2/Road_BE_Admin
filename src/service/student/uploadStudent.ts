@@ -1,6 +1,6 @@
 import { BasicResponse } from '../../types';
 import { Request, RequestHandler, Response } from 'express';
-import { prisma } from '../../config/prisma';
+import { prisma, StudentState } from '../../config/prisma';
 import { read, utils } from 'xlsx';
 import { FileFirstGradeStudentData, FileStudentData } from '../../types/student';
 
@@ -32,7 +32,7 @@ const uploadStudent = async (req: Request, res: Response<BasicResponse>) => {
           grade: null,
           classNumber: null,
           studentNumber: null,
-          state: 'GRADUATION'
+          state: StudentState.GRADUATION
         }
       });
 

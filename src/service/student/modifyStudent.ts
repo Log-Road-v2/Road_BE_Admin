@@ -1,6 +1,6 @@
 import { BasicResponse } from '../../types';
 import { Request, RequestHandler, Response } from 'express';
-import { prisma } from '../../config/prisma';
+import { prisma, StudentState } from '../../config/prisma';
 import { StudentParams, ModifyStudentRequest } from '../../types/student';
 
 export const modifyStudentHandler: RequestHandler<StudentParams, BasicResponse, ModifyStudentRequest> = async (
@@ -45,7 +45,7 @@ const modifyStudent = async (
       });
     }
 
-    if (state === 'SCHOOL') {
+    if (state === StudentState.SCHOOL) {
       await prisma.student.update({
         where: { id: studentId },
         data: {

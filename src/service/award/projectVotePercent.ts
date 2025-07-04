@@ -2,7 +2,7 @@ import { Request, RequestHandler, Response } from 'express';
 import { BasicResponse } from '../../types';
 import { ProjectVotePercentData, ProjectVotePercentQuery, ProjectVotePercentResponse } from '../../types/award';
 import { ContestParams } from '../../types/contest';
-import { prisma } from '../../config/prisma';
+import { prisma, Role } from '../../config/prisma';
 import { parseEnvToInt } from '../../utils/parseEnv';
 import { buildFileUrl } from '../../utils/buildFileUrl';
 
@@ -48,17 +48,17 @@ const projectVotePercent = async (
     ]);
 
     const totalStudentVote = projects.reduce(
-      (acc, project) => acc + project.vote.filter((v) => v.user.role === 'STUDENT').length,
+      (acc, project) => acc + project.vote.filter((v) => v.user.role === Role.STUDENT).length,
       0
     );
     const totalTeacherVote = projects.reduce(
-      (acc, project) => acc + project.vote.filter((v) => v.user.role === 'TEACHER').length,
+      (acc, project) => acc + project.vote.filter((v) => v.user.role === Role.TEACHER).length,
       0
     );
 
     const projectList: ProjectVotePercentData[] = projects.map((project) => {
-      const studentVote = project.vote.filter((v) => v.user.role === 'STUDENT').length;
-      const teacherVote = project.vote.filter((v) => v.user.role === 'TEACHER').length;
+      const studentVote = project.vote.filter((v) => v.user.role === Role.STUDENT).length;
+      const teacherVote = project.vote.filter((v) => v.user.role === Role.TEACHER).length;
 
       return {
         id: project.id.toString(),

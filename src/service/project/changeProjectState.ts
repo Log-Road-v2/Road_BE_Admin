@@ -1,7 +1,7 @@
 import { Request, RequestHandler, Response } from 'express';
 import { BasicResponse } from '../../types';
 import { ChangeProjectStateRequest, ProjectParams } from '../../types/project';
-import { prisma } from '../../config/prisma';
+import { prisma, ProjectState } from '../../config/prisma';
 
 export const changeProjectStateHandler: RequestHandler<
   ProjectParams,
@@ -38,16 +38,16 @@ const changeProjectState = async (
     }
 
     await prisma.$transaction(async (tx) => {
-      if (project.state === 'REJECTED' && state !== 'REJECTED') {
+      if (project.state === ProjectState.REJECTED && state !== ProjectState.REJECTED) {
         await tx.feedback.delete({
           where: { projectId: project.id }
         });
-      } else if (project.state === 'REJECTED' && state === 'REJECTED') {
+      } else if (project.state === ProjectState.REJECTED && state === ProjectState.REJECTED) {
         await tx.feedback.update({
           where: { projectId: project.id },
           data: { content: content || '' }
         });
-      } else if (state === 'REJECTED') {
+      } else if (state === ProjectState.REJECTED) {
         await tx.feedback.create({
           data: {
             projectId: project.id,

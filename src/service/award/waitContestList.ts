@@ -1,7 +1,7 @@
 import { Request, RequestHandler, Response } from 'express';
 import { WaitContestListData, WaitContestListResponse } from '../../types/award';
 import { BasicResponse } from '../../types';
-import { prisma } from '../../config/prisma';
+import { ContestState, prisma } from '../../config/prisma';
 
 export const waitContestListHandler: RequestHandler = async (req, res) => {
   await waitContestList(req, res);
@@ -23,7 +23,7 @@ const waitContestList = async (req: Request, res: Response<WaitContestListRespon
           }
         }
       },
-      where: { state: { in: ['VOTING', 'PENDING'] } },
+      where: { state: { in: [ContestState.VOTING, ContestState.PENDING] } },
       orderBy: { startDate: 'asc' }
     });
 

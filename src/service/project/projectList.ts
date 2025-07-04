@@ -28,7 +28,7 @@ const projectList = async (
     const state = req.query.state || 'ALL';
     const keyword = req.query.keyword?.trim();
 
-    if (state === 'WRITING') {
+    if (state === ProjectState.WRITING) {
       return res.status(400).json({
         message: '올바르지 않은 파라미터'
       });
